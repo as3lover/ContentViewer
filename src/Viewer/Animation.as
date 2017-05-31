@@ -25,11 +25,11 @@ public class Animation
         _length =  _list.length;
         for(var i:int = 0 ; i < _length; i++)
         {
-            ViewItem(_list[i]).time = _time;
+            Item(_list[i]).time = _time;
         }
 
         _oldTimer = getTimer();
-        View.board.addEventListener(Event.ENTER_FRAME, ef);
+        Main.board.addEventListener(Event.ENTER_FRAME, ef);
     }
 
     private function ef(e:Event):void
@@ -38,7 +38,7 @@ public class Animation
         _time += (_newTimer - _oldTimer)/1000;
         for(var i:int = 0 ; i < _length; i++)
         {
-            ViewItem(_list[i]).time = _time;
+            Item(_list[i]).time = _time;
         }
         _oldTimer = _newTimer;
     }
@@ -46,6 +46,22 @@ public class Animation
     public function set list(list:Array):void
     {
         _list = list;
+    }
+
+    public function start():void
+    {
+        Main.board.addEventListener(Event.ENTER_FRAME, checkTime);
+    }
+
+    private function checkTime(event:Event):void
+    {
+        _time = Main.sound.time;
+
+        _length =  _list.length;
+        for(var i:int = 0 ; i < _length; i++)
+        {
+            Item(_list[i]).time = _time;
+        }
     }
 }
 }

@@ -11,10 +11,15 @@
             <entry library-id="194477c4-d7ab-4793-ab1e-3a32853c8596">
               <dependency linkage="Merged" />
             </entry>
+            <entry library-id="700866b0-5376-41a7-89a5-d81cec95d442">
+              <dependency linkage="Merged" />
+            </entry>
           </entries>
           <sdk name="AIRSDK_Compiler" />
         </dependencies>
-        <compiler-options />
+        <compiler-options>
+          <option name="additionalConfigFilePath" value="$MODULE_DIR$/.idea/compiler.xml" />
+        </compiler-options>
         <packaging-air-desktop />
         <packaging-android />
         <packaging-ios />
@@ -44,6 +49,16 @@
         <properties id="194477c4-d7ab-4793-ab1e-3a32853c8596" />
         <CLASSES>
           <root url="jar://C:/Program Files/Adobe/Adobe Animate CC 2017/Common/Configuration/ActionScript 3.0/libs/tlfruntime.swc!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="700866b0-5376-41a7-89a5-d81cec95d442" />
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../as3corelib/src" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

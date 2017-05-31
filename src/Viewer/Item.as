@@ -12,7 +12,7 @@ import items.TextMask;
 
 import src2.Consts;
 
-public class ViewItem extends Sprite
+public class Item extends Sprite
 {
     private var _type:String;
     private var _text:String;
@@ -47,8 +47,9 @@ public class ViewItem extends Sprite
     private var _mask:TextMask;
     private var _bitmap:Bitmap;
     private var _lines:int;
+    private var _number:int;
 
-    public function ViewItem(obj:Object)
+    public function Item(obj:Object)
     {
         visible = false;
         _time  = -100;
@@ -66,7 +67,7 @@ public class ViewItem extends Sprite
         }
         else
         {
-            _fileName = View.folder + obj.fileName;
+            _fileName = Main.folder + obj.fileName;
         }
 
         _x = obj.x;
@@ -74,39 +75,82 @@ public class ViewItem extends Sprite
         _scaleX = obj.scaleX;
         _scaleY = obj.scaleY;
         _rotation = obj.rotation;
-        _index = obj.index - 1;
+        _index = obj.index;
         _motion = obj.motion;
+        _number = obj.number;
 
         _startTime = obj.startTime;
         _stopTime = obj.stopTime;
         _showDuration = obj.showDuration;
         _hideDuration = obj.hideDuration;
 
-        View.board.addChild(this);
+        Main.board.addChild(this);
     }
 
     public function load():void
     {
-        parent.swapChildren(this, parent.getChildAt(_index));
+        setState();
+
+        if(parent)
+            parent.swapChildren(this, parent.getChildAt(_index));
+        else
+            return;
+
         motion = _motion;
-        show(1);
+
         if(_fileName)
         {
             dispatchEvent(complete);
-            View.loader.LoadBitmap(_fileName, this);
+            Main.loader.loadBitmap(_fileName, setBitmap, true);
         }
         else
         {
-            trace(_text);
-            View.text.show(_text, after, false, _formats, false);
+            Main.text.show(_text, after, false, _formats, false);
+            /*
+            if(LocalObject.exist(Main.projectPath, String(_number)+'bit'))
+            {
+                LocalObject.load(Main.projectPath, String(_number)+'bit',bitmapLoaded)
+            }
+            else
+            {
+                Main.text.show(_text, after, false, _formats, false);
+            }
+            */
+        }
+
+        function bitmapLoaded(bit:Bitmap):void
+        {
+            _bitmap = bit;
+            LocalObject.load(Main.projectPath, String(_number)+'lines',linesLoaded)
+        }
+
+        function linesLoaded(lines):void
+        {
+            _lines = int(lines);
+            after(_bitmap, _lines);
         }
     }
 
-    private function after():void
+
+    private function after(bit:Bitmap = null, lines:int = 1):void
     {
-        bitmap = View.text.getBitmaap(QUALITY);
-        _lines = View.text.lines;
-        setTimeout(dispatchEvent, 1, complete);
+        if(!bit)
+        {
+            bitmap = Main.text.getBitmaap(QUALITY);
+            _lines = Main.text.lines;
+
+            //LocalObject.save(Main.projectPath, String(_number) + 'bit', _bitmap);
+            //LocalObject.save(Main.projectPath, String(_number) + 'lines', _lines);
+        }
+        else
+        {
+            bitmap = bit;
+            _lines = lines;
+        }
+
+
+
+        setTimeout(dispatchEvent, 4, complete);
     }
 
     public override function set alpha(alpha:Number):void
@@ -117,6 +161,11 @@ public class ViewItem extends Sprite
             visible = false;
         else
             visible = true;
+    }
+
+    private function setBitmap(bit:Bitmap):void
+    {
+        bitmap = bit;
     }
 
     public function set bitmap(bitmap:Bitmap):void
@@ -199,11 +248,10 @@ public class ViewItem extends Sprite
 
     private function setProps(percent:Number = 1):void
     {
-        alpha = percent;
-
         if(_type == TEXT)
         {
             setState();
+            alpha = percent;
             showTypeEffect(percent);
             return;
         }
@@ -211,6 +259,7 @@ public class ViewItem extends Sprite
         if(percent == 1)
         {
             setState();
+            alpha = percent;
             return;
         }
 
@@ -218,6 +267,8 @@ public class ViewItem extends Sprite
         {
             setProp(field, 1-percent);
         }
+
+        alpha = percent;
     }
 
     function setProp(prop:String, percent:Number):void
@@ -241,6 +292,8 @@ public class ViewItem extends Sprite
             mask = null;
             return;
         }
+
+        alpha = 1;
 
         if(!_mask)
         {

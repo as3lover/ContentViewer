@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="FlexIdeProjectLevelCompilerOptionsHolder">
-    <compiler-options />
+    <compiler-options>
+    	<use-network>false</use-network>
+    </compiler-options>
+    <compiler>
+    	<use-network>false</use-network>
+    </compiler>
   </component>
 </project>

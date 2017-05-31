@@ -5,12 +5,17 @@ package src2
 {
 
 
+import fl.text.TLFTextField;
+
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.geom.Rectangle;
+import flash.text.TextFieldAutoSize;
+import flash.text.TextFormat;
+import flash.text.TextFormatAlign;
 
 
 public class Utils
@@ -134,8 +139,47 @@ public class Utils
     }
 
 
+    public static function removeItemAtIndex(list:Array, index:int):void
+    {
+        list.splice(index, 1);
+    }
 
+    ///////////////////
+    public static function StringToBitmap(text:String, color:uint=0xffffff, font:String="B Yekan", size:int=14 ,width:int= 260, height:int=35):Bitmap
+    {
+        var fmt:TextFormat = new TextFormat();
+        fmt.color = color;
+        fmt.font = font;
+        fmt.size = size * 3;
+        fmt.leftMargin = 0;
+        fmt.align = TextFormatAlign.LEFT;
 
+        var txt:TLFTextField = new TLFTextField() ;
+        txt.defaultTextFormat = fmt;
+        txt.width = 1000;
+        txt.height = 1000;
+        txt.wordWrap = true;
+        txt.multiline = true;
+        txt.embedFonts = true;
+        txt.condenseWhite = true;
+        txt.autoSize = TextFieldAutoSize.RIGHT;
+        txt.text = text;
+        txt.cacheAsBitmap = true;
+
+        var sprite:Sprite = new Sprite();
+        sprite.addChild(txt);
+        var snapshot:BitmapData = new BitmapData(txt.textWidth, txt.textHeight, true, 0x00000000);
+        snapshot.draw(sprite, new Matrix());
+        var bit:Bitmap = new Bitmap(snapshot);
+        bit.smoothing = true;
+
+        sprite.removeChild(txt);
+        sprite.addChild(bit);
+
+        bit.scaleX = bit.scaleY = 1/3;
+
+        return bit;
+    }
 
 }
 }
