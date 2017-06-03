@@ -10,19 +10,23 @@ import flash.text.TextFormat;
 
 import src2.Utils;
 
-public class Loading extends Sprite
+public class Progress extends Sprite
 {
     private var _bar:Sprite;
     private var _text:TextField;
     private var _f:TextFormat;
-    public function Loading()
+    private var main:ContentViewer;
+
+    public function Progress(Main:ContentViewer)
     {
+        main = Main;
+
         hide();
 
         scaleX = scaleY = 1.5;
 
-        x = Main.board.x + Main.board.width / 2;
-        y = Main.board.y + Main.board.height / 2;
+        x = main.board.x + main.board.width / 2;
+        y = main.board.y + main.board.height / 2;
 
         Utils.drawRect(this, -50, -20, 100, 40, 0x000000);
         Utils.drawRect(this, -40, 2, 80, 4, 0x333333);

@@ -3,17 +3,14 @@
  */
 package Viewer
 {
-import avmplus.finish;
 
 import flash.display.Bitmap;
-import flash.display.DisplayObject;
 import flash.display.Loader;
 import flash.display.LoaderInfo;
 import flash.events.Event;
 import flash.events.IOErrorEvent;
 import flash.net.URLLoader;
 import flash.net.URLRequest;
-import flash.utils.getTimer;
 import flash.utils.setTimeout;
 
 import src2.Utils;
@@ -23,17 +20,20 @@ public class FileLoader
     private var _stop:Boolean;
     private var _loading:Boolean;
     private var _list:Array;
+    private var main:ContentViewer;
 
-    public function FileLoader()
+    public function FileLoader(Main:ContentViewer)
     {
+        main = Main;
     }
+
 
     public function load(path:String):void
     {
         _stop = false;
 
-        Main.loading.text = 'Connecting...';
-        Main.loading.percent = 0;
+        main.progress.text = 'Connecting...';
+        main.progress.percent = 0;
 
         var loader:URLLoader = new URLLoader();
         loader.addEventListener(Event.COMPLETE, onLoaded);
@@ -90,31 +90,31 @@ public class FileLoader
 
             if(i == 'color')
             {
-                Main.board.color = obj as uint;
+               main.board.color = obj as uint;
                 continue;
             }
 
             if(i == 'back')
             {
-                Main.board.back = String(Main.folder + obj as String);
+               main.board.back = String(main.folder + obj as String);
                 continue;
             }
 
-            var item:Item = new Item(obj);
+            var item:Item = new Item(obj, main);
             list.push(item);
 
         }
 
         var n:int = 0;
         setTimeout(loadItem, 4);
-        Main.loading.text = 'Loading Contents...';
+        main.progress.text = 'Loading Contents...';
 
         function loadItem():void
         {
             if(_stop)
                 return;
 
-            Main.loading.percent = n/list.length;
+            main.progress.percent = n/list.length;
             if(n < list.length)
             {
                 item = Item(list[n]);
@@ -142,9 +142,8 @@ public class FileLoader
             if(_stop)
                 return;
 
-            Main.animation.list = list;
+            main.animation.list = list;
             loadSound();
-            Main.animation.start();
         }
 
         function loadSound():void
@@ -152,31 +151,10 @@ public class FileLoader
             if(_stop)
                 return;
 
-            Main.sound.load(Main.folder + 'file.voice');
-            //Main.sound.load('http://kalami.ir/wp-content/uploads/2016/11/smk-interview-with-sokan.mp3');
+            if(sound)
+                main.sound.load(main.folder + sound);
         }
 
-
-        /*
-        trace('loaded time', time)
-        Main.loadedTime = time;
-        Main.animationControl.loadItems();
-        Main.animationControl.number = number;
-        Main.changed = false;
-        if(sound)
-        {
-            if (sound)
-            {
-                if(sound == 'file.voice')
-                {
-                    trace('new Sound:', FileManager.itemsFolder + '/' + sound);
-                    sound = FileManager.itemsFolder + '/' + sound;
-                }
-
-                Main.timeLine.sound = sound;
-            }
-        }
-        */
     }
 
     public function loadBitmap(path:String, func:Function, change:Boolean = false):void
@@ -194,22 +172,7 @@ public class FileLoader
 
         _loading = true;
 
-        var time:int = getTimer();
-
-        /*
-        if(LocalObject.exist('test', path))
-        {
-            LocalObject.load('test', path, loadedSharedObject);
-        }
-        else
-        {
-            var loader:Loader = new Loader();
-            loader.contentLoaderInfo.addEventListener(Event.COMPLETE, loadedFile);
-
-            loader.load(new URLRequest(path));
-            loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onError);
-        }
-        */
+        //var time:int = getTimer();
 
         var loader:Loader = new Loader();
         loader.contentLoaderInfo.addEventListener(Event.COMPLETE, loadedFile);
@@ -222,20 +185,12 @@ public class FileLoader
             trace('Can Not Load File:', path);
             func(null)
         }
-        /*
-        function loadedSharedObject(bit:Bitmap):void
-        {
-            trace('loadedSharedObject', getTimer() - time);
-            onComplete(bit);
-        }
-        */
+
         function loadedFile (event:Event):void
         {
             var bit:Bitmap = Bitmap(LoaderInfo(event.target).content);
-            trace('loadedFile', getTimer() - time);
+            //trace('loadedFile', getTimer() - time);
             onComplete(bit);
-
-            //LocalObject.save('test', path, bit);
         }
 
         function onComplete(bit:Bitmap)
@@ -267,22 +222,7 @@ public class FileLoader
         bit.y = -bit.height/2;
     }
 
-    public function loadText(file:String, func:Function):void
-    {
-        if(_stop)
-            return;
-
-        var loader:URLLoader = new URLLoader();
-        loader.addEventListener(Event.COMPLETE, onLoaded);
-        function onLoaded(e:Event):void
-        {
-            func(e.target.data);
-        }
-
-        loader.load(new URLRequest(file));
-    }
-
-    public function stop():void
+     public function stop():void
     {
         _stop = true;
     }

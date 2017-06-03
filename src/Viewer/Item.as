@@ -15,8 +15,6 @@ import src2.Consts;
 public class Item extends Sprite
 {
     private var _type:String;
-    private var _text:String;
-    private var _formats:Array;
     private var _typingEndTime:Number;
     private var _fileName:String;
 
@@ -35,8 +33,6 @@ public class Item extends Sprite
     
     private var _time:Number;
     
-
-    public static const QUALITY:Number = 2;
     private static const complete:Event = new Event(Event.COMPLETE);
     private static const IMAGE:String = 'image';
     private static const TEXT:String = 'text';
@@ -48,16 +44,18 @@ public class Item extends Sprite
     private var _bitmap:Bitmap;
     private var _lines:int;
     private var _number:int;
+    private var main:ContentViewer;
 
-    public function Item(obj:Object)
+    public function Item(obj:Object, Main:ContentViewer)
     {
-        visible = false;
+        main = Main;
+        
+        super.visible = false;
         _time  = -100;
         _type = obj.type;
         if(_type == TEXT)
         {
-            _text = obj.text;
-            _formats = obj.formats;
+            _lines = obj.lines;
             _typingEndTime = obj.typingEndTime;
             if(_typingEndTime != -1)
             {
@@ -65,10 +63,8 @@ public class Item extends Sprite
                 addChild(_mask);
             }
         }
-        else
-        {
-            _fileName = Main.folder + obj.fileName;
-        }
+
+        _fileName = main.folder + obj.fileName;
 
         _x = obj.x;
         _y = obj.y;
@@ -84,7 +80,20 @@ public class Item extends Sprite
         _showDuration = obj.showDuration;
         _hideDuration = obj.hideDuration;
 
-        Main.board.addChild(this);
+        main.board.addChild(this);
+
+        if(_type == TEXT)
+        {
+            if(_typingEndTime == -1)
+            {
+                _typeEffect = false;
+            }
+            else
+            {
+                _showDuration = _typingEndTime - _startTime;
+                _typeEffect = true;
+            }
+        }
     }
 
     public function load():void
@@ -98,69 +107,29 @@ public class Item extends Sprite
 
         motion = _motion;
 
-        if(_fileName)
-        {
-            dispatchEvent(complete);
-            Main.loader.loadBitmap(_fileName, setBitmap, true);
-        }
-        else
-        {
-            Main.text.show(_text, after, false, _formats, false);
-            /*
-            if(LocalObject.exist(Main.projectPath, String(_number)+'bit'))
-            {
-                LocalObject.load(Main.projectPath, String(_number)+'bit',bitmapLoaded)
-            }
-            else
-            {
-                Main.text.show(_text, after, false, _formats, false);
-            }
-            */
-        }
-
-        function bitmapLoaded(bit:Bitmap):void
-        {
-            _bitmap = bit;
-            LocalObject.load(Main.projectPath, String(_number)+'lines',linesLoaded)
-        }
-
-        function linesLoaded(lines):void
-        {
-            _lines = int(lines);
-            after(_bitmap, _lines);
-        }
+        main.loader.loadBitmap(_fileName, setBitmap, true);
     }
 
-
-    private function after(bit:Bitmap = null, lines:int = 1):void
-    {
-        if(!bit)
-        {
-            bitmap = Main.text.getBitmaap(QUALITY);
-            _lines = Main.text.lines;
-
-            //LocalObject.save(Main.projectPath, String(_number) + 'bit', _bitmap);
-            //LocalObject.save(Main.projectPath, String(_number) + 'lines', _lines);
-        }
-        else
-        {
-            bitmap = bit;
-            _lines = lines;
-        }
-
-
-
-        setTimeout(dispatchEvent, 4, complete);
-    }
 
     public override function set alpha(alpha:Number):void
     {
+        if(super.alpha == alpha)
+                return;
+
         super.alpha = alpha;
 
         if(alpha == 0)
             visible = false;
         else
             visible = true;
+    }
+
+    public override function set visible(vis:Boolean):void
+    {
+        if(vis == visible)
+                return;
+
+        super.visible = vis;
     }
 
     private function setBitmap(bit:Bitmap):void
@@ -175,13 +144,10 @@ public class Item extends Sprite
         if(bitmap)
             addChild(bitmap);
 
-        if(_type == IMAGE)
-            dispatchEvent(complete);
-        else
-            bitmap.scaleY = bitmap.scaleX = 1.15;
-
         bitmap.x = -bitmap.width/2;
         bitmap.y = -bitmap.height/2;
+
+        setTimeout(dispatchEvent,4,complete);
     }
     ///////////////////////////
     ///////////////////////////
@@ -193,18 +159,7 @@ public class Item extends Sprite
         if(time == _time)
                 return;
 
-        if(_type == TEXT)
-        {
-            if(_typingEndTime == -1)
-            {
-                _typeEffect = false;
-            }
-            else
-            {
-                _showDuration = _typingEndTime - _startTime;
-                _typeEffect = true;
-            }
-        }
+        _time = time;
 
         if(time < _startTime)
         {
@@ -237,30 +192,38 @@ public class Item extends Sprite
     {
         if(percent == 1)
         {
-            visible = false;
+            alpha = 0;
         }
         else
         {
-            setProps();
+            setState();
             alpha = 1 - percent;
         }
     }
 
     private function setProps(percent:Number = 1):void
     {
-        if(_type == TEXT)
-        {
-            setState();
-            alpha = percent;
-            showTypeEffect(percent);
-            return;
-        }
+        setState();
 
         if(percent == 1)
         {
-            setState();
             alpha = percent;
+            mask = null;
             return;
+        }
+
+        if(_type == TEXT)
+        {
+            if(_typeEffect)
+            {
+                alpha = 1;
+                showTypeEffect(percent);
+                return;
+            }
+            else
+            {
+                mask = null
+            }
         }
 
         for (var field:String in _startProps)
@@ -269,6 +232,7 @@ public class Item extends Sprite
         }
 
         alpha = percent;
+
     }
 
     function setProp(prop:String, percent:Number):void
@@ -287,14 +251,6 @@ public class Item extends Sprite
 
     public function showTypeEffect(percent:Number):void
     {
-        if(!_typeEffect || percent == 1)
-        {
-            mask = null;
-            return;
-        }
-
-        alpha = 1;
-
         if(!_mask)
         {
             _mask = new TextMask();
@@ -362,6 +318,16 @@ public class Item extends Sprite
                 _startProps.rotation = _rotation + 180;
                 break;
         }
+    }
+
+    public function get startTime():Number
+    {
+        return _startTime;
+    }
+
+    public function get stopTime():Number
+    {
+        return _stopTime;
     }
 }
 }

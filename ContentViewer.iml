@@ -2,16 +2,10 @@
 <module type="Flex" version="4">
   <component name="FlexBuildConfigurationManager" active="ContentViewer">
     <configurations>
-      <configuration name="ContentViewer" pure-as="true" main-class="Main" output-file="Main.swf" output-folder="$MODULE_DIR$/out/production/ContentViewer" wrapper-template-path="$MODULE_DIR$/html-template">
+      <configuration name="ContentViewer" pure-as="true" output-file="Viewer.swf" output-folder="$MODULE_DIR$/out/production/ContentViewer">
         <dependencies target-player="25.0">
           <entries>
-            <entry library-id="06fd4a08-caea-4139-9126-50c807462496">
-              <dependency linkage="Merged" />
-            </entry>
-            <entry library-id="194477c4-d7ab-4793-ab1e-3a32853c8596">
-              <dependency linkage="Merged" />
-            </entry>
-            <entry library-id="700866b0-5376-41a7-89a5-d81cec95d442">
+            <entry library-id="8a27f7ba-3c8f-4c96-b447-bc005b76e37e">
               <dependency linkage="Merged" />
             </entry>
           </entries>
@@ -36,29 +30,9 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library" exported="">
       <library type="flex">
-        <properties id="06fd4a08-caea-4139-9126-50c807462496" />
+        <properties id="8a27f7ba-3c8f-4c96-b447-bc005b76e37e" />
         <CLASSES>
-          <root url="jar://C:/Program Files/Adobe/Adobe Animate CC 2017/Common/Configuration/ActionScript 3.0/libs/textLayout.swc!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library type="flex">
-        <properties id="194477c4-d7ab-4793-ab1e-3a32853c8596" />
-        <CLASSES>
-          <root url="jar://C:/Program Files/Adobe/Adobe Animate CC 2017/Common/Configuration/ActionScript 3.0/libs/tlfruntime.swc!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library type="flex">
-        <properties id="700866b0-5376-41a7-89a5-d81cec95d442" />
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/../as3corelib/src" />
+          <root url="file://$MODULE_DIR$/../Hi-ReS-Stats/src" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

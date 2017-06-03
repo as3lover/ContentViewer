@@ -4,43 +4,18 @@
 package Viewer
 {
 import flash.events.Event;
-import flash.utils.getTimer;
+
 
 public class Animation
 {
     private var _time:Number;
     private var _list:Array;
     private var _length:uint;
-    private var _newTimer:int;
-    private var _oldTimer:int;
+    private var main:ContentViewer;
 
-    public function Animation()
+    public function Animation(Main:ContentViewer)
     {
-    }
-
-    public function play(time:Number = -1):void
-    {
-        _time = time;
-
-        _length =  _list.length;
-        for(var i:int = 0 ; i < _length; i++)
-        {
-            Item(_list[i]).time = _time;
-        }
-
-        _oldTimer = getTimer();
-        Main.board.addEventListener(Event.ENTER_FRAME, ef);
-    }
-
-    private function ef(e:Event):void
-    {
-        _newTimer = getTimer();
-        _time += (_newTimer - _oldTimer)/1000;
-        for(var i:int = 0 ; i < _length; i++)
-        {
-            Item(_list[i]).time = _time;
-        }
-        _oldTimer = _newTimer;
+        main = Main;
     }
 
     public function set list(list:Array):void
@@ -50,12 +25,13 @@ public class Animation
 
     public function start():void
     {
-        Main.board.addEventListener(Event.ENTER_FRAME, checkTime);
+        main.board.addEventListener(Event.ENTER_FRAME, checkTime);
     }
 
-    private function checkTime(event:Event):void
+
+    private function checkTime(e:Event = null):void
     {
-        _time = Main.sound.time;
+        _time = main.sound.time;
 
         _length =  _list.length;
         for(var i:int = 0 ; i < _length; i++)

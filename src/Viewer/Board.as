@@ -13,11 +13,16 @@ public class Board extends Sprite
 {
     private var _back:Sprite;
     private var _mask:Sprite;
+    private const RED:uint = 0xff0000;
+    private var main:ContentViewer;
+    ;
 
-    public function Board()
+    public function Board(Main:ContentViewer)
     {
+        main = Main;
+        
         visible = false;
-        color = 0xff0000;
+        color = RED;
 
         _back = new Sprite();
         addChild(_back);
@@ -38,8 +43,12 @@ public class Board extends Sprite
 
     public function set color(color:uint):void
     {
+        var alpha:Number = 1;
+        if(color == RED)
+                alpha = 0;
+
         graphics.clear();
-        graphics.beginFill(color);
+        graphics.beginFill(color, alpha);
         graphics.drawRect(0,0, 600, 337);
         graphics.endFill();
         visible = true;
@@ -57,12 +66,14 @@ public class Board extends Sprite
 
     public function set back(file:String):void
     {
-        Main.loader.loadBitmap(file, loadedBack)
+        main.loader.loadBitmap(file, loadedBack)
     }
 
     private function loadedBack(bit:Bitmap):void
     {
         bit.width = _mask.width;
+        bit.scaleY = bit.scaleX;
+
         if(bit.height < _mask.height)
         {
             bit.height = _mask.height;

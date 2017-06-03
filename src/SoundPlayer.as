@@ -1,14 +1,15 @@
 ﻿package {
 	//Morteza Khodadadi 1391/4/29
+
 import flash.display.Sprite;
 import flash.events.Event;
-	import flash.media.Sound;
-	import flash.media.SoundChannel;
-	import flash.media.SoundTransform;
-	import flash.net.URLRequest;
-	import flash.media.SoundLoaderContext;
+import flash.media.Sound;
+import flash.media.SoundChannel;
+import flash.media.SoundTransform;
+import flash.net.URLRequest;
 
-	public class soundPlayer extends Sprite
+
+public class SoundPlayer extends Sprite
 	{
         private var _sound:Sound;
         private var _channel:SoundChannel;
@@ -17,9 +18,12 @@ import flash.events.Event;
 		private const buffer:int = 10;
 		private var _playing:Boolean;
 		private var _loaded:Boolean = false;
+    private var main:ContentViewer;
 
-		public function soundPlayer()
+		public function SoundPlayer(Main:ContentViewer)
 		{
+            main = Main;
+			
 			// constructor code
 			_transform= new SoundTransform();
 			_transform.volume = 2;
@@ -31,31 +35,93 @@ import flash.events.Event;
 		public function load(file:String)
 		{
             stop();
-            Main.loading.text = 'Loading Sound...';
-            addEventListener(Event.ENTER_FRAME, ef);
+            main.progress.text = 'Loading Sound...';
 			_loaded = false;
             _channel.removeEventListener(Event.SOUND_COMPLETE,finished);
 			_sound = null;
 			_sound = new Sound();
-			_sound.load(new URLRequest(file), new SoundLoaderContext(buffer * 1000));
-		}
-
-        private function ef(event:Event):void
-        {
-            var p:Number = 0;
-			if(_sound.bytesTotal)
-					p = _sound.bytesLoaded / _sound.bytesTotal;
-
-			Main.loading.percent = p;
-
-            if(p == 1)
-            {
-                removeEventListener(Event.ENTER_FRAME, ef);
-				_loaded = true;
-                resume();
-            }
-
+			//_sound.load(new URLRequest(file), new SoundLoaderContext(buffer * 1000));
+			_sound.load(new URLRequest(file));
+            addEventListener(Event.ENTER_FRAME, ef);
         }
+
+    private function ef(event:Event):void
+    {
+        var p:Number = 0;
+        if(_sound.bytesTotal)
+            p = _sound.bytesLoaded / _sound.bytesTotal;
+
+        main.progress.percent = p;
+
+        if(p == 1)
+        {
+            main.progress.text = 'Loaded';
+            removeEventListener(Event.ENTER_FRAME, ef);
+            _loaded = true;
+            main.animation.start();
+            resume();
+        }
+
+    }
+/*
+    private function LoadURL2(path:String):void
+    {
+        var loader:Loader = new Loader();
+        loader.contentLoaderInfo.addEventListener(Event.COMPLETE, loadedFile);
+
+        loader.load(new URLRequest(path));
+        loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onError);
+
+        function onError(e:IOErrorEvent):void
+        {
+            trace('Can Not Load File:', path);
+			trace(e);
+        }
+
+        function loadedFile (event:Event):void
+        {
+            trace(LoaderInfo(event.target).content);
+        }
+    }
+
+        private function LoadURL(file:String):void
+        {
+            stop();
+            Main.loading.text = 'Loading Sound...';
+            _loaded = false;
+            _channel.removeEventListener(Event.SOUND_COMPLETE,finished);
+            _sound = null;
+            _sound = new Sound();
+            var loader:URLLoader = new URLLoader(new URLRequest(file));
+            loader.dataFormat = URLLoaderDataFormat.BINARY;
+            addEventListener(Event.ENTER_FRAME, ef2);
+
+            function ef2(event:Event):void
+            {
+                var p:Number = 0;
+                if(loader.bytesTotal)
+                    p = loader.bytesLoaded / loader.bytesTotal;
+                else
+                    Main.loading.text = String(Math.random());
+
+                Main.loading.percent = p;
+
+                if(p == 1)
+                {
+					var bytes:ByteArray = ByteArray(loader.data);
+					bytes.position = 0;
+                    _sound.loadCompressedDataFromByteArray (bytes, bytes.length );
+                    Main.loading.text = 'Loaded';
+                    removeEventListener(Event.ENTER_FRAME, ef2);
+                    _loaded = true;
+                    resume();
+                }
+            }
+        }
+*/
+
+
+
 
 		private function finished(e:Event)
 		{
