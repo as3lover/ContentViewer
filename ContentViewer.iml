@@ -2,10 +2,10 @@
 <module type="Flex" version="4">
   <component name="FlexBuildConfigurationManager" active="ContentViewer">
     <configurations>
-      <configuration name="ContentViewer" pure-as="true" output-file="Viewer.swf" output-folder="$MODULE_DIR$/out/production/ContentViewer">
+      <configuration name="ContentViewer" pure-as="true" output-type="Library" output-file="Viewer.swc" output-folder="$MODULE_DIR$/out/production/ContentViewer">
         <dependencies target-player="25.0">
           <entries>
-            <entry library-id="8a27f7ba-3c8f-4c96-b447-bc005b76e37e">
+            <entry library-id="b15f5f13-53cc-40af-affa-3cb0cfd32253">
               <dependency linkage="Merged" />
             </entry>
           </entries>
@@ -30,7 +30,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library" exported="">
       <library type="flex">
-        <properties id="8a27f7ba-3c8f-4c96-b447-bc005b76e37e" />
+        <properties id="b15f5f13-53cc-40af-affa-3cb0cfd32253" />
         <CLASSES>
           <root url="file://$MODULE_DIR$/../Hi-ReS-Stats/src" />
         </CLASSES>

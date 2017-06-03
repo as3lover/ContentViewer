@@ -45,12 +45,16 @@ public class Item extends Sprite
     private var _lines:int;
     private var _number:int;
     private var main:ContentViewer;
+    private var _showPercent:Number;
+    private var _hidePercent:Number;
 
     public function Item(obj:Object, Main:ContentViewer)
     {
         main = Main;
         
         super.visible = false;
+        alpha = 0;
+
         _time  = -100;
         _type = obj.type;
         if(_type == TEXT)
@@ -130,6 +134,18 @@ public class Item extends Sprite
                 return;
 
         super.visible = vis;
+
+        if(!vis)
+        {
+            main.animation.remove(this);
+            trace('remove', _number);
+        }
+        else
+        {
+            main.animation.add(this);
+            trace('add', _number);
+
+        }
     }
 
     private function setBitmap(bit:Bitmap):void
@@ -159,6 +175,8 @@ public class Item extends Sprite
         if(time == _time)
                 return;
 
+        //main.add(_number);
+
         _time = time;
 
         if(time < _startTime)
@@ -185,11 +203,26 @@ public class Item extends Sprite
 
     private function show(percent:Number = 1):void
     {
+        if(_showPercent == percent)
+            return;
+
+        _showPercent = percent;
+        _hidePercent = -1;
+
         setProps(percent);
+        //main.add('show ' + String(int(percent*100)) +' '+ String(int(alpha*100)) +' '+ String(visible));
     }
 
     private function hide(percent:Number = 1):void
     {
+        //main.add('hide' + String(percent));
+
+        if(_hidePercent == percent)
+            return;
+
+        _showPercent = -1;
+        _hidePercent = percent;
+
         if(percent == 1)
         {
             alpha = 0;
@@ -328,6 +361,14 @@ public class Item extends Sprite
     public function get stopTime():Number
     {
         return _stopTime;
+    }
+
+    public function inTime(_time:Number):Boolean
+    {
+        if(_time > _startTime && _time < _stopTime + _hideDuration)
+            return true;
+        else
+            return false;
     }
 }
 }

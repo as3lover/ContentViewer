@@ -8,6 +8,7 @@ import Viewer.Board;
 import Viewer.FileLoader;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
+import flash.text.TextField;
 import flash.utils.getTimer;
 import flash.utils.setTimeout;
 
@@ -27,6 +28,7 @@ public class ContentViewer extends Sprite
     private var _time:int;
     private var _old:int = 0;
     private var _new:int = 0;
+    private var _textBox:TextField;
 
 
     public function ContentViewer()
@@ -50,6 +52,12 @@ public class ContentViewer extends Sprite
 
         board.addEventListener(MouseEvent.CLICK, click);
 
+        _textBox = new TextField();
+        _textBox.y = 150;
+        _textBox.width = 300;
+        _textBox.height = 1000;
+        addChild(_textBox);
+
         load('D:/Projects/IdeaProjects/Template/Main/lessons/', '3');
 
         addChild(new Stats());
@@ -67,6 +75,10 @@ public class ContentViewer extends Sprite
     }
     private function click(event:MouseEvent):void
     {
+        if(!loaded)
+                return;
+
+        animation.resetTimes();
         percent = mouseX/600;
     }
 
@@ -162,7 +174,17 @@ public class ContentViewer extends Sprite
             _new += getTimer() - _time;
         else
             _old += getTimer() - _time;
-        trace('old',_old,'new',_new);
+        //trace('old',_old,'new',_new);
+        add(null);
+        _textBox.text = 'old ' + _old + ' new ' + _new  + ' ' + String(animation._show.length);
+    }
+
+    public function add(s):void
+    {
+        if(s == null)
+            _textBox.text = String(Math.random());
+        else
+            _textBox.text = _textBox.text + '\n' + String(s);
     }
 }
 }
