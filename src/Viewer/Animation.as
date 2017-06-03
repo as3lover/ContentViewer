@@ -122,8 +122,13 @@ public class Animation
 
         if(i != _currentIndex)
         {
-            _clone = copyArray(_master[i]);
             _currentIndex = i;
+
+            _clone = copyArray(_master[i]);
+
+            if(i>0)
+                _clone = _clone.concat(_master[i-1])
+
         }
 
         var index:Array=[];
@@ -131,23 +136,14 @@ public class Animation
         for(i = 0 ; i<_length; i++)
         {
             if(Item(_clone[i]).startTime <= _time)
-            {
                 index.push(i);
-            }
             else
-            {
-                i = _length;
-            }
+                break;
         }
 
         _length = index.length;
         for(i = _length-1 ; i>-1; i--)
         {
-            //_show.push(_clone.splice(i,1) as Item)
-            /////////////////
-            //_show.push(Item(_clone[i]));
-            //_clone.splice(i,1)
-            //////////////////
             Item(_clone[i]).visible = true;
             _clone.splice(i,1)
         }
@@ -210,5 +206,6 @@ public class Animation
         main.traceTime('oldType');
 
     }
+
 }
 }

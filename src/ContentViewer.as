@@ -58,7 +58,7 @@ public class ContentViewer extends Sprite
         _textBox.height = 1000;
         addChild(_textBox);
 
-        load('D:/Projects/IdeaProjects/Template/Main/lessons/', '3');
+        load('D:/Projects/IdeaProjects/Template/Main/lessons/', '5');
 
         addChild(new Stats());
 
@@ -175,8 +175,7 @@ public class ContentViewer extends Sprite
         else
             _old += getTimer() - _time;
         //trace('old',_old,'new',_new);
-        add(null);
-        _textBox.text = 'old ' + _old + ' new ' + _new  + ' ' + String(animation._show.length);
+        _textBox.text = 'old ' + _old + ' new ' + _new // + ' ' + String(animation._show.length)
     }
 
     public function add(s):void

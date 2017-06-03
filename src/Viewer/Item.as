@@ -43,7 +43,7 @@ public class Item extends Sprite
     private var _mask:TextMask;
     private var _bitmap:Bitmap;
     private var _lines:int;
-    private var _number:int;
+    public var _number:int;
     private var main:ContentViewer;
     private var _showPercent:Number;
     private var _hidePercent:Number;
@@ -78,7 +78,7 @@ public class Item extends Sprite
         _index = obj.index;
         _motion = obj.motion;
         _number = obj.number;
-
+        if(obj.startTime == 0)obj.startTime = 0.01;
         _startTime = obj.startTime;
         _stopTime = obj.stopTime;
         _showDuration = obj.showDuration;
@@ -138,12 +138,12 @@ public class Item extends Sprite
         if(!vis)
         {
             main.animation.remove(this);
-            trace('remove', _number);
+            //trace('remove', _number);
         }
         else
         {
             main.animation.add(this);
-            trace('add', _number);
+            //trace('add', _number);
 
         }
     }
@@ -211,6 +211,8 @@ public class Item extends Sprite
 
         setProps(percent);
         //main.add('show ' + String(int(percent*100)) +' '+ String(int(alpha*100)) +' '+ String(visible));
+        if(_number == 199)
+            trace('show', percent);
     }
 
     private function hide(percent:Number = 1):void
@@ -232,6 +234,9 @@ public class Item extends Sprite
             setState();
             alpha = 1 - percent;
         }
+
+        if(_number == 199)
+            trace('hide', percent);
     }
 
     private function setProps(percent:Number = 1):void
@@ -297,12 +302,8 @@ public class Item extends Sprite
 
     public function set motion(type:String):void
     {
-        if(_motion == type)
-            return;
-
         _startProps = new Object();
         _motion = type;
-
 
         switch (type)
         {
@@ -350,6 +351,13 @@ public class Item extends Sprite
             case Consts.rotate:
                 _startProps.rotation = _rotation + 180;
                 break;
+
+            case Consts.fade:
+                break;
+
+            default:
+                trace('remove', type);
+                break;
         }
     }
 
@@ -363,12 +371,12 @@ public class Item extends Sprite
         return _stopTime;
     }
 
-    public function inTime(_time:Number):Boolean
+    public function inTime(time:Number):Boolean
     {
-        if(_time > _startTime && _time < _stopTime + _hideDuration)
-            return true;
-        else
+        if(time < _startTime || _stopTime + _hideDuration > time)
             return false;
+        else
+            return true;
     }
 }
 }
