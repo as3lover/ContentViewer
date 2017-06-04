@@ -6,7 +6,14 @@ package
 import Viewer.Animation;
 import Viewer.Board;
 import Viewer.FileLoader;
+import Viewer.Keyboard;
+import Viewer.TimeLine;
+import Viewer.assets;
+
+import flash.display.Bitmap;
+
 import flash.display.Sprite;
+import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.text.TextField;
 import flash.utils.getTimer;
@@ -14,7 +21,7 @@ import flash.utils.setTimeout;
 
 import net.hires.debug.Stats;
 
-[SWF(width="600", height="337", frameRate=60, backgroundColor='0x444444')]
+[SWF(width="600", height="355", frameRate=60, backgroundColor='0x444444')]
 
 public class ContentViewer extends Sprite
 {
@@ -23,15 +30,27 @@ public class ContentViewer extends Sprite
     public var loader:FileLoader;
     public var animation:Animation;
     public var sound:SoundPlayer;
+    public var timeLine:TimeLine;
     public var progress:Progress;
     public var projectPath:String;
     private var _time:int;
     private var _old:int = 0;
     private var _new:int = 0;
     private var _textBox:TextField;
+    private static var _volume:Volume;
+    public var playIcon:Sprite;
+    public var pauseIcon:Sprite;
+
+    public static const W:int = 600;
+    public static const H:int = 337;
 
 
     public function ContentViewer()
+    {
+        addEventListener(Event.ADDED_TO_STAGE, init);
+    }
+
+    private function init(event:Event):void
     {
         setTimeout(INIT,1);
     }
@@ -46,9 +65,37 @@ public class ContentViewer extends Sprite
         progress = new Progress(this);
         addChild(progress);
 
+        timeLine = new TimeLine(this, 0, 337+5, 600, 13);
+        addChild(timeLine);
+
         animation = new Animation(this);
 
         loader = new FileLoader(this);
+
+        new Keyboard(stage, this);
+
+        _volume = new Volume();
+        addChild(_volume);
+
+        playIcon = new Sprite();
+        sett(playIcon, new assets.PlayIcon());
+
+        pauseIcon = new Sprite();
+        sett(pauseIcon, new assets.PauseIcon());
+
+        function sett(sprite:Sprite, bit:Bitmap):void
+        {
+            sprite.x = W/2;
+            sprite.y = H/2;
+            sprite.visible = false;
+            addChild(sprite);
+            bit.smoothing = true;
+            bit.scaleX = bit.scaleY = .5;
+            bit.x = - bit.width/2;
+            bit.y = - bit.height/2;
+            sprite.addChild(bit);
+        }
+
 
         board.addEventListener(MouseEvent.CLICK, click);
 
@@ -58,7 +105,7 @@ public class ContentViewer extends Sprite
         _textBox.height = 1000;
         addChild(_textBox);
 
-        load('D:/Projects/IdeaProjects/Template/Main/lessons/', '5');
+        load('D:/Projects/IdeaProjects/Template/Main/lessons/', '1');
 
         addChild(new Stats());
 
@@ -75,11 +122,7 @@ public class ContentViewer extends Sprite
     }
     private function click(event:MouseEvent):void
     {
-        if(!loaded)
-                return;
-
-        animation.resetTimes();
-        percent = mouseX/600;
+        percent = mouseX/W;
     }
 
     ///////////////////////////////
@@ -119,7 +162,20 @@ public class ContentViewer extends Sprite
     ///////////////////////////////
     public function set percent(p:Number):void
     {
+        if(!loaded)
+            return;
+
+        animation.resetTimes();
         sound.percent = p;
+    }
+
+    public function setTime(time:Number):void
+    {
+        if(!loaded)
+            return;
+
+        animation.resetTimes();
+        sound.time = time;
     }
 
     public function stop():void
@@ -133,6 +189,7 @@ public class ContentViewer extends Sprite
     {
         trace('replay');
 
+        animation.resetTimes();
         sound.stop();
         sound.play(0);
     }
@@ -163,7 +220,7 @@ public class ContentViewer extends Sprite
         super.visible = v;
     }
 
-    public function setTime():void
+    public function setTimer():void
     {
         _time = getTimer();
     }
@@ -184,6 +241,12 @@ public class ContentViewer extends Sprite
             _textBox.text = String(Math.random());
         else
             _textBox.text = _textBox.text + '\n' + String(s);
+    }
+
+    public static function ShowVolume(percent:Number):void
+    {
+        if(_volume)
+            _volume.show(percent);
     }
 }
 }

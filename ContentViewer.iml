@@ -8,6 +8,9 @@
             <entry library-id="b15f5f13-53cc-40af-affa-3cb0cfd32253">
               <dependency linkage="Merged" />
             </entry>
+            <entry library-id="d58c3f80-0aef-41f2-97cf-d102613b191f">
+              <dependency linkage="Merged" />
+            </entry>
           </entries>
           <sdk name="AIRSDK_Compiler" />
         </dependencies>
@@ -33,6 +36,16 @@
         <properties id="b15f5f13-53cc-40af-affa-3cb0cfd32253" />
         <CLASSES>
           <root url="file://$MODULE_DIR$/../Hi-ReS-Stats/src" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="d58c3f80-0aef-41f2-97cf-d102613b191f" />
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../GreenSock-AS3/src" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

@@ -112,7 +112,7 @@ public class Animation
         if(_time == time)
             return;
 
-        main.setTime();
+        main.setTimer();
 
         //main.add(null);
 
@@ -153,6 +153,8 @@ public class Animation
 
     private function setTimes():void
     {
+        main.timeLine.percent = main.percent;
+
         _length =  _show.length;
         //trace(_length)
         for(var i:int = _length-1 ; i>-1 ; i--)
@@ -194,8 +196,8 @@ public class Animation
         if(_time == time)
             return;
 
-        main.setTime();
-
+        main.setTimer();
+        main.timeLine.percent = main.percent;
         _time = time;
 
         _length =  _list.length;

@@ -3,6 +3,10 @@
  */
 package src2
 {
+import com.greensock.TweenLite;
+import com.greensock.TweenMax;
+
+import flash.display.DisplayObject;
 
 
 public class Utils
@@ -62,9 +66,14 @@ public class Utils
         }
     }
 
-    public static function drawRect(object:Object, x:int, y:int, width:int, height:int, color:int = 0x333333):void
+    public static function drawRect(object:Object, x:int, y:int, width:int, height:int, color:int = 0x333333, lineWidth:Number = 0, lineColor:uint = 0x0):void
     {
-        object.graphics.beginFill(color);
+        if(lineWidth)
+            object.graphics.lineStyle(lineWidth, lineColor);
+        if(color == -1)
+            object.graphics.endFill();
+        else
+            object.graphics.beginFill(color);
         object.graphics.drawRect(x, y, width, height);
         object.graphics.endFill();
     }
@@ -89,5 +98,53 @@ public class Utils
         return false;
     }
 
+    public static function toast(obj:DisplayObject, showDuration:Number = .3, fixDuration:Number = 1, hideDuration:Number = .75):void
+    {
+        TweenLite.killTweensOf(obj);
+
+        if(obj.visible == false)
+        {
+            obj.alpha = 0;
+            obj.visible = true;
+        }
+
+        TweenLite.to(obj, showDuration, {alpha:1, onComplete:t});
+
+        function t()
+        {
+            TweenLite.to(obj, hideDuration, {delay:fixDuration, alpha:0, onComplete:v});
+        }
+
+        function v()
+        {
+            obj.visible = false;
+        }
+    }
+
+    public static function zoomToast(obj:DisplayObject, duration:Number = .5):void
+    {
+        if(obj.visible)
+                return;
+
+        TweenLite.killTweensOf(obj);
+        TweenMax.killTweensOf(obj);
+
+        obj.alpha = 0;
+        obj.visible = true;
+        obj.scaleX = obj.scaleY = .5;
+
+        TweenLite.to(obj, duration, {scaleX:1.5, scaleY:1.5, onComplete:v});
+
+        function v()
+        {
+            obj.visible = false;
+        }
+
+        TweenMax.to(obj, duration/3, {alpha:.85, onComplete:t});
+        function t()
+        {
+            TweenMax.to(obj, duration/3, {delay:duration/3, alpha:0});
+        }
+    }
 }
 }
