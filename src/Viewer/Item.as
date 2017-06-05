@@ -211,8 +211,7 @@ public class Item extends Sprite
 
         setProps(percent);
         //main.add('show ' + String(int(percent*100)) +' '+ String(int(alpha*100)) +' '+ String(visible));
-        if(_number == 199)
-            trace('show', percent);
+
     }
 
     private function hide(percent:Number = 1):void
@@ -234,9 +233,6 @@ public class Item extends Sprite
             setState();
             alpha = 1 - percent;
         }
-
-        if(_number == 199)
-            trace('hide', percent);
     }
 
     private function setProps(percent:Number = 1):void
@@ -273,7 +269,7 @@ public class Item extends Sprite
 
     }
 
-    function setProp(prop:String, percent:Number):void
+    private function setProp(prop:String, percent:Number):void
     {
         this[prop] -= percent * (this[prop] - _startProps[prop]);
     }

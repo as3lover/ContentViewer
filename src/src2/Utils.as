@@ -85,6 +85,9 @@ public class Utils
 
     public static function removeObjectFromArray(list:Array, item:Object):Boolean
     {
+        if(!list)
+            return false;
+
         var length:int = list.length
         for (var i: int = 0; i < length; i++)
         {
@@ -110,12 +113,12 @@ public class Utils
 
         TweenLite.to(obj, showDuration, {alpha:1, onComplete:t});
 
-        function t()
+        function t():void
         {
             TweenLite.to(obj, hideDuration, {delay:fixDuration, alpha:0, onComplete:v});
         }
 
-        function v()
+        function v():void
         {
             obj.visible = false;
         }
@@ -135,13 +138,13 @@ public class Utils
 
         TweenLite.to(obj, duration, {scaleX:1.5, scaleY:1.5, onComplete:v});
 
-        function v()
+        function v():void
         {
             obj.visible = false;
         }
 
         TweenMax.to(obj, duration/3, {alpha:.85, onComplete:t});
-        function t()
+        function t():void
         {
             TweenMax.to(obj, duration/3, {delay:duration/3, alpha:0});
         }

@@ -12,5 +12,8 @@ public class assets
     [Embed(source="../../assets/pause.png")]
     public static var PauseIcon:Class;
 
+    [Embed(source="../../assets/PausePlay.png")]
+    public static var PausePlay:Class;
+
 }
 }

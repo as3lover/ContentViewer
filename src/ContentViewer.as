@@ -19,9 +19,9 @@ import flash.text.TextField;
 import flash.utils.getTimer;
 import flash.utils.setTimeout;
 
-import net.hires.debug.Stats;
+//import net.hires.debug.Stats;
 
-[SWF(width="600", height="355", frameRate=60, backgroundColor='0x444444')]
+[SWF(width="600", height="360", frameRate=60, backgroundColor='0x444444')]
 
 public class ContentViewer extends Sprite
 {
@@ -33,13 +33,20 @@ public class ContentViewer extends Sprite
     public var timeLine:TimeLine;
     public var progress:Progress;
     public var projectPath:String;
+    public var keyboard:Keyboard;
+
+    public var actived:Boolean;
+
     private var _time:int;
     private var _old:int = 0;
     private var _new:int = 0;
     private var _textBox:TextField;
-    private static var _volume:Volume;
+
     public var playIcon:Sprite;
     public var pauseIcon:Sprite;
+
+
+    private static var _volume:Volume;
 
     public static const W:int = 600;
     public static const H:int = 337;
@@ -47,11 +54,13 @@ public class ContentViewer extends Sprite
 
     public function ContentViewer()
     {
+        trace('new: ContentViewer')
         addEventListener(Event.ADDED_TO_STAGE, init);
     }
 
     private function init(event:Event):void
     {
+        removeEventListener(Event.ADDED_TO_STAGE, init);
         setTimeout(INIT,1);
     }
 
@@ -72,7 +81,7 @@ public class ContentViewer extends Sprite
 
         loader = new FileLoader(this);
 
-        new Keyboard(stage, this);
+        keyboard = new Keyboard(stage, this);
 
         _volume = new Volume();
         addChild(_volume);
@@ -97,37 +106,39 @@ public class ContentViewer extends Sprite
         }
 
 
-        board.addEventListener(MouseEvent.CLICK, click);
+        //board.addEventListener(MouseEvent.CLICK, click);
 
         _textBox = new TextField();
         _textBox.y = 150;
         _textBox.width = 300;
-        _textBox.height = 1000;
+        _textBox.height = H - _textBox.y;
         addChild(_textBox);
 
-        load('D:/Projects/IdeaProjects/Template/Main/lessons/', '1');
+        load('D:/Projects/IdeaProjects/Template/Main/lessons/', '5');
 
-        addChild(new Stats());
+        //addChild(new Stats());
 
     }
 
 
     private function reset():void
     {
-        trace('reset');
+        //trace('reset');
         board.reset();
         sound.reset();
         loader.stop();
 
     }
+
     private function click(event:MouseEvent):void
     {
-        percent = mouseX/W;
+        //percent = mouseX/W;
     }
 
     ///////////////////////////////
-    public function load(dir:String, file:String)
+    public function load(dir:String, file:String):void
     {
+        actived = true;
         projectPath = dir + file + '.rian';
         reset();
         this.folder = dir + file + '/';
@@ -180,14 +191,15 @@ public class ContentViewer extends Sprite
 
     public function stop():void
     {
-        trace('stop');
+        //trace('stop');
 
         sound.stop();
     }
 
     public function replay():void
     {
-        trace('replay');
+        //trace('replay');
+        actived = true;
 
         animation.resetTimes();
         sound.stop();
@@ -196,11 +208,12 @@ public class ContentViewer extends Sprite
 
     public function pause():void
     {
-        trace('pause');
+        actived = false;
+        //trace('pause');
 
         if(loaded)
         {
-            trace('sound.pause()')
+            //trace('sound.pause()')
             sound.pause();
         }
         else
@@ -209,14 +222,14 @@ public class ContentViewer extends Sprite
 
     public function resume():void
     {
-        trace('resume');
+        //trace('resume');
         sound.resume();
     }
     ///////////////////////////////
 
     public override function set visible(v:Boolean):void
     {
-        trace('Main visible', v);
+        //trace('Main visible', v);
         super.visible = v;
     }
 
@@ -231,7 +244,7 @@ public class ContentViewer extends Sprite
             _new += getTimer() - _time;
         else
             _old += getTimer() - _time;
-        //trace('old',_old,'new',_new);
+        ////trace('old',_old,'new',_new);
         _textBox.text = 'old ' + _old + ' new ' + _new // + ' ' + String(animation._show.length)
     }
 

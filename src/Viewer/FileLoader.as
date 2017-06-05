@@ -79,7 +79,7 @@ public class FileLoader
 
             if(i == 'topics')
             {
-                trace('topic', obj);
+                //trace('topic', obj);
                 continue;
             }
 
@@ -193,7 +193,7 @@ public class FileLoader
             onComplete(bit);
         }
 
-        function onComplete(bit:Bitmap)
+        function onComplete(bit:Bitmap):void
         {
             if(_stop)
                 return;

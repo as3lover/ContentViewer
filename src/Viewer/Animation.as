@@ -37,7 +37,7 @@ public class Animation
         _list = list;
     }
 
-    public function resetTimes()
+    public function resetTimes():void
     {
         clearTimeout(_timeout);
         main.board.removeEventListener(Event.ENTER_FRAME, checkTimes);
@@ -45,7 +45,7 @@ public class Animation
         _clone = [];
         main.board.addEventListener(Event.ENTER_FRAME, checkTime);
         _timeout = setTimeout(sett,700);
-        function sett()
+        function sett():void
         {
             main.board.addEventListener(Event.ENTER_FRAME, checkTimes);
             main.board.removeEventListener(Event.ENTER_FRAME, checkTime);

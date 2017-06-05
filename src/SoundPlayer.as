@@ -34,7 +34,7 @@ public class SoundPlayer extends Sprite
     }
 
     /////////////// Load File
-    public function load(file:String)
+    public function load(file:String):void
     {
         stop();
         main.progress.text = 'Loading Sound...';
@@ -125,7 +125,7 @@ public class SoundPlayer extends Sprite
 
 
 
-    private function finished(e:Event)
+    private function finished(e:Event):void
     {
         dispatchEvent(new Event('finish'));
     }
@@ -174,7 +174,7 @@ public class SoundPlayer extends Sprite
 
 
     /////////////// Stop
-    public function stop()
+    public function stop():void
     {
         try
         {
@@ -238,14 +238,14 @@ public class SoundPlayer extends Sprite
 		return int(_volume * 50);
 	}
 
-    public static function volumeUp()
+    public static function volumeUp():void
     {
-        volume += 2;
+        volume += 5;
     }
 
-    public static function volumeDown()
+    public static function volumeDown():void
     {
-        volume -= 2;
+        volume -= 5;
     }
 
     /////////////// getTime

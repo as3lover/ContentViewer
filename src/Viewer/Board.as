@@ -87,7 +87,7 @@ public class Board extends Sprite
 
     public override function set visible(v:Boolean):void
     {
-        trace('board visible', v);
+        //trace('board visible', v);
         super.visible = v;
     }
 

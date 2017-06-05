@@ -3,7 +3,6 @@
  */
 package Viewer
 {
-import flash.display.DisplayObject;
 import flash.display.Stage;
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
@@ -25,7 +24,7 @@ public class Keyboard
 
     private function onWheel(e:MouseEvent):void
     {
-        if(!main.visible)
+        if(!main.actived)
             return;
 
         if(e.delta < 0)
@@ -37,7 +36,9 @@ public class Keyboard
 
     private function onKeyDown(e:KeyboardEvent):void
     {
-        if(!main.loaded || !main.visible)
+        trace('onKeyDown', main.actived);
+
+        if(!main.actived || !main.loaded)
                 return;
 
         switch (e.keyCode)
@@ -68,8 +69,11 @@ public class Keyboard
         }
     }
 
-    private function pausePlay():void
+    public function pausePlay():void
     {
+        if(!main.sound.loaded)
+            return;
+
         if(main.sound.pausePlay())
         {
             main.pauseIcon.visible = false;
@@ -91,7 +95,7 @@ public class Keyboard
         else
             i *= 5;
 
-        trace(i);
+        //trace(i);
         main.setTime(main.sound.time + i);
     }
 }

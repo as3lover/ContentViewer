@@ -3,6 +3,7 @@
  */
 package Viewer
 {
+import flash.display.Bitmap;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
@@ -18,29 +19,52 @@ public class TimeLine extends Sprite
     private var _x:Number;
     private var _down:Boolean;
     private var _p:Number;
+    private var _btn:Sprite;
 
     public function TimeLine(main:ContentViewer, x:int, y:int, width:int, height:int)
     {
-        this.main = main;
+        _btn = new Sprite();
+        var bit:Bitmap = new assets.PausePlay();
+        bit.height = height;
+        bit.scaleX = bit.scaleY;
+        bit.smoothing = true;
+        _btn.buttonMode = true;
+        addChild(_btn);
+        _btn.addChild(bit);
 
+        var space:int = bit.width + 5;
+        _btn.x -= space;
+        x += space;
+        width -= space;
+        /////////////////////////
+
+        this.main = main;
         this.x = x;
         this.y = y;
         _w = width;
-        Utils.drawRect(this, 0,0, width, height, 0x1A783E);
+
+        Utils.drawRect(this, 0,0, _w, height, 0x1A783E);
 
         _bar = new Sprite();
-        Utils.drawRect(_bar, 0,0, width, height, 0x8EC2A2);
+        Utils.drawRect(_bar, 0,0, _w, height, 0x8EC2A2);
         addChild(_bar);
 
         var line:Sprite = new Sprite();
-        Utils.drawRect(line, 0,0, width, height, -1, .5, 0xffffff);
+        Utils.drawRect(line, 0,0, _w, height, -1, .5, 0xffffff);
         addChild(line);
 
         addEventListener(MouseEvent.MOUSE_DOWN, onDown);
     }
 
-    private function onDown(event:MouseEvent):void
+    private function onDown(e:MouseEvent):void
     {
+        if(e.target == _btn)
+        {
+            main.keyboard.pausePlay();
+            return;
+        }
+
+
         _x = -1;
         _p = -1;
         _down = true;
