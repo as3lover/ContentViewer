@@ -3,6 +3,7 @@
  */
 package Viewer
 {
+import flash.display.DisplayObject;
 import flash.display.Stage;
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
@@ -36,8 +37,6 @@ public class Keyboard
 
     private function onKeyDown(e:KeyboardEvent):void
     {
-        trace('onKeyDown', main.actived);
-
         if(!main.actived || !main.loaded)
                 return;
 
@@ -96,7 +95,7 @@ public class Keyboard
             i *= 5;
 
         //trace(i);
-        main.setTime(main.sound.time + i);
+        main.time = main.sound.time + i;
     }
 }
 }

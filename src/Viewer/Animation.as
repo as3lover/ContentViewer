@@ -13,10 +13,11 @@ public class Animation
 {
     private var _time:Number;
     private var _list:Array;
-    private var _length:uint;
+    private var _len:uint;
 
     private var main:ContentViewer;
     private var _currentIndex:int;
+    private var _currentTopic:int;
 
     private var _master:Array;
     private var _clone:Array;
@@ -25,6 +26,11 @@ public class Animation
     private var _hide:Array;
     private const STEP:Number = 1;
     private var _timeout:uint;
+    private var _topics:Array;
+
+    private var _startTime:Number;
+    private var _stopTime:Number;
+    private var _duration:Number;
 
 
     public function Animation(Main:ContentViewer)
@@ -32,11 +38,13 @@ public class Animation
         main = Main;
     }
 
+    ///////////////////////////////// Set List
     public function set list(list:Array):void
     {
         _list = list;
     }
 
+    ///////////////////////////////// reset Times
     public function resetTimes():void
     {
         clearTimeout(_timeout);
@@ -52,11 +60,18 @@ public class Animation
         }
     }
 
+    ///////////////////////////////// Start
     public function start():void
     {
-        sort(_list);
+        Utils.sortArrayByField(_list,'startTime');
 
         _currentIndex = -1;
+        
+        _currentTopic = -1;
+        _startTime = 0;
+        _stopTime = main.sound.total;
+        _duration = _stopTime - _startTime;
+        main.activeTopic(0);
 
         _show = new Array()
         _hide = new Array()
@@ -64,19 +79,19 @@ public class Animation
         _master = new Array();
 
         var i:int;
-        _length =  int(main.sound.total/STEP);
+        _len =  int(main.sound.total/STEP);
 
 
-        for(i=0; i<_length; i++)
+        for(i=0; i<_len; i++)
         {
             _master[i] = new Array();
         }
 
-        _length =  _list.length;
+        _len =  _list.length;
 
         var i2:int;
 
-        for(i = 0 ; i < _length; i++)
+        for(i = 0 ; i < _len; i++)
         {
             i2 = int(Item(_list[i]).startTime / STEP);
             _master[i2].push(_list[i]);
@@ -86,35 +101,12 @@ public class Animation
     }
 
 
-    private function sort(list:Array):void
-    {
-        _length = list.length;
-        for(var i:int=0; i<_length-1; i++)
-        {
-            for(var j:int=_length-1; j>i; j--)
-            {
-                if(Item(list[j]).startTime < Item(list[j-1]).startTime)
-                    swap(list, j, j-1);
-            }
-        }
-    }
-
-    private function swap(list:Array, i:int, j:int):void
-    {
-        var temp:Item = list[i];
-        list[i] = list[j];
-        list[j] = temp
-    }
 
     private function checkTimes(event:Event):void
     {
         var time:Number = main.sound.time;
         if(_time == time)
             return;
-
-        main.setTimer();
-
-        //main.add(null);
 
         _time = time;
 
@@ -124,7 +116,7 @@ public class Animation
         {
             _currentIndex = i;
 
-            _clone = copyArray(_master[i]);
+            _clone = Utils.copyArray(_master[i]);
 
             if(i>0)
                 _clone = _clone.concat(_master[i-1])
@@ -132,8 +124,8 @@ public class Animation
         }
 
         var index:Array=[];
-        _length = _clone.length;
-        for(i = 0 ; i<_length; i++)
+        _len = _clone.length;
+        for(i = 0 ; i<_len; i++)
         {
             if(Item(_clone[i]).startTime <= _time)
                 index.push(i);
@@ -141,8 +133,8 @@ public class Animation
                 break;
         }
 
-        _length = index.length;
-        for(i = _length-1 ; i>-1; i--)
+        _len = index.length;
+        for(i = _len-1 ; i>-1; i--)
         {
             Item(_clone[i]).visible = true;
             _clone.splice(i,1)
@@ -151,21 +143,113 @@ public class Animation
         setTimes();
     }
 
+    ///////////////////////////////// set Times
     private function setTimes():void
     {
-        main.timeLine.percent = main.percent;
+        checkTopics();
+        main.update();
 
-        _length =  _show.length;
-        //trace(_length)
-        for(var i:int = _length-1 ; i>-1 ; i--)
+        _len =  _show.length;
+        for(var i:int = _len-1 ; i>-1 ; i--)
         {
             Item(_show[i]).time = _time;
         }
-
-        main.traceTime('new Type');
-        //checkTime();
     }
 
+    ///////////////////////////////// Old check Time
+    private function checkTime(e:Event = null):void
+    {
+        var time:Number = main.sound.time;
+        if(_time == time)
+            return;
+
+        _time = time;
+        checkTopics();
+        main.update();
+
+        _len =  _list.length;
+        for(var i:int = 0 ; i < _len; i++)
+        {
+            Item(_list[i]).time = _time;
+        }
+    }
+
+    ////////////////////////////////////// Topics
+    public function set topics(topics:Array):void
+    {
+        _topics = topics;
+    }
+
+    public function checkTopics():void
+    {
+        _len = _topics.length;
+        for(var i:int=_len-1; i>-1; i--)
+        {
+            //trace('i:',i, 'topic i time:',_topics[i].time,'current time', _time, 'currentTopic:', _currentTopic, 'id:', _topics[i].id);
+            if(_topics[i].time - 1 < _time)
+            {
+                if(_currentTopic != i)
+                {
+                    currentTopic = i;
+                    main.activeTopic(i);
+                    if(_topics[i].id)
+                        main.pause();
+
+                }
+                return;
+            }
+        }
+    }
+
+    public function set currentTopic(i:Number):void
+    {
+        _currentTopic = i;
+
+        _startTime = _topics[i].time;
+        if(_topics.length > i+1)
+            _stopTime = _topics[i+1].time;
+        else
+            _stopTime = main.sound.total;
+
+        _duration = _stopTime - _startTime;
+    }
+
+    public function newTopic(num:int):String
+    {
+        trace('newTopic', num)
+        for(var i:int=0; i<num; i++)
+        {
+            if(_topics[i].id)
+            {
+                var score:Object = _topics[i].score;
+                trace('score', score);
+                if(score == -1)
+                {
+                    return String('ابتدا باید به سؤالات ' + _topics[i].text + ' پاسخ دهید.');
+                }
+                else if(score < 70)
+                {
+                    return String('ابتدا باید نمره کافی در ' + _topics[i].text + ' به دست آورید');
+                }
+            }
+        }
+
+        main.time = _topics[num].time;
+
+        return null;
+    }
+
+    public function get startTime():Number
+    {
+        return _startTime;
+    }
+
+    public function get stopTime():Number
+    {
+        return _stopTime;
+    }
+
+    /////////////////////////// Add / Remove : Show List
     public function remove(item:Item):void
     {
         Utils.removeObjectFromArray(_show, item);
@@ -175,39 +259,66 @@ public class Animation
     {
         _show.push(item);
     }
-
-    private function copyArray(list:Array):Array
+    ///////////////////////////
+    public function get duration():Number
     {
-        if(!list)
-            return [];
-
-        var copy:Array = new Array();
-        var l:int = list.length;
-        for(var i:int=0; i<l; i++)
-        {
-            copy[i] = list[i];
-        }
-        return copy;
+        return _duration;
     }
 
-    private function checkTime(e:Event = null):void
+    public function get prevTime():Number
     {
-        var time:Number = main.sound.time;
-        if(_time == time)
-            return;
-
-        main.setTimer();
-        main.timeLine.percent = main.percent;
-        _time = time;
-
-        _length =  _list.length;
-        for(var i:int = 0 ; i < _length; i++)
-        {
-            Item(_list[i]).time = _time;
-        }
-        main.traceTime('oldType');
-
+        if(_currentTopic > 0)
+            return _topics[_currentTopic-1].time;
+        else
+            return 0;
     }
 
+    public function get nextTime():Number
+    {
+        if(_currentTopic < _topics.length-1)
+            return _topics[_currentTopic+1].time;
+        else
+            return _time;
+    }
+
+    public function prevTopic():void
+    {
+        if(_currentTopic > 0)
+            main.setTopicNumber(_currentTopic-1);
+        else
+            main.setTopicNumber(_currentTopic);
+    }
+
+    public function nextTopic():void
+    {
+        if(_currentTopic < _topics.length-1)
+            main.setTopicNumber(_currentTopic+1);
+        else
+                main.resume();
+    }
+
+    public function get quizScore():Number
+    {
+        return _topics[_currentTopic].score;
+    }
+
+    public function set quizScore(n:Number):void
+    {
+        if( _topics[_currentTopic].score > n && n == 0)
+                return;
+
+         _topics[_currentTopic].score = n;
+        Client.save('quiz_score_' + _topics[_currentTopic].id, n)
+    }
+
+    public function getQuiz(num:int):Array
+    {
+        return Utils.shuffle(_topics[num].quiz);
+    }
+
+    public function resetTopic():void
+    {
+        _currentTopic = -1;
+    }
 }
 }

@@ -38,7 +38,7 @@ public class SoundPlayer extends Sprite
     {
         stop();
         main.progress.text = 'Loading Sound...';
-        _loaded = false;
+        loaded = false;
         _channel.removeEventListener(Event.SOUND_COMPLETE,finished);
         _sound = null;
         _sound = new Sound();
@@ -59,7 +59,7 @@ public class SoundPlayer extends Sprite
         {
             main.progress.text = 'Loaded';
             removeEventListener(Event.ENTER_FRAME, ef);
-            _loaded = true;
+            loaded = true;
             main.animation.start();
             resume();
         }
@@ -133,7 +133,7 @@ public class SoundPlayer extends Sprite
     /////////////// Pause / Play
     public function pausePlay():Boolean
     {
-        if (_playing)
+        if (playing)
         {
             pause();
             return false;
@@ -148,20 +148,21 @@ public class SoundPlayer extends Sprite
 
     public function pause():void
     {
-        if (_playing)
+        if (playing)
         {
             _position = _channel.position;
             _channel.stop();
-            _playing = false;
+            playing = false;
         }
     }
     public function resume():void
     {
-        if (!_playing)
+        if (!playing)
         {
             _channel = _sound.play(_position);
             _channel.soundTransform = _transform;
-            _playing = true;
+            _channel.addEventListener(Event.SOUND_COMPLETE,finished);
+            playing = true;
         }
     }
 
@@ -188,13 +189,13 @@ public class SoundPlayer extends Sprite
         catch(a){}
 
         _position = 0;
-        _playing = false;
+        playing = false;
     }
 
     public function reset():void
     {
         stop();
-        _loaded = false;
+        loaded = false;
     }
 
     /////////////// setTimePercent
@@ -206,15 +207,18 @@ public class SoundPlayer extends Sprite
     /////////////// setTimeSecond
     public function set time(second:Number):void
     {
-        if(!_loaded)
-        {
-            _position = second * 1000;
-            return;
-        }
-        _channel.stop();
-        _channel = _sound.play(second*1000);
-        _channel.soundTransform = _transform;
-        _playing = true;
+        if(second < 0)
+            second = 0;
+        else if(second > total)
+            second = total;
+
+        pause();
+        _position = second * 1000;
+
+        if(!loaded)
+                return;
+
+        resume();
     }
 	////////////////////////
 	public static function set volume(volume:int):void
@@ -256,7 +260,7 @@ public class SoundPlayer extends Sprite
 
     public function get time():Number
     {
-        if(_playing)
+        if(playing)
             return _channel.position / 1000;
         else
             return _position/1000;
@@ -270,7 +274,7 @@ public class SoundPlayer extends Sprite
 
     public function get totalString():String
     {
-        if(_loaded)
+        if(loaded)
             return timeFormat(_sound.length);
         else
             return "Loading";
@@ -279,7 +283,7 @@ public class SoundPlayer extends Sprite
     /////////////// getPercent
     public function get percent():Number
     {
-        if(_loaded)
+        if(loaded)
             return _channel.position / _sound.length;
         else
             return 0;
@@ -314,6 +318,23 @@ public class SoundPlayer extends Sprite
     public function get loaded():Boolean
     {
         return _loaded;
+    }
+
+    public function set loaded(loaded:Boolean):void
+    {
+        _loaded = loaded;
+        if(loaded)
+            dispatchEvent(new Event('loaded'))
+    }
+
+    public function get playing():Boolean
+    {
+        return _playing;
+    }
+
+    public function set playing(value:Boolean):void
+    {
+        _playing = value;
     }
 }
 

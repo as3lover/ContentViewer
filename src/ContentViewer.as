@@ -7,7 +7,13 @@ import Viewer.Animation;
 import Viewer.Board;
 import Viewer.FileLoader;
 import Viewer.Keyboard;
-import Viewer.TimeLine;
+
+import flash.external.ExternalInterface;
+import flash.utils.clearTimeout;
+
+import src2.Utils;
+
+//import Viewer.TimeLine;
 import Viewer.assets;
 
 import flash.display.Bitmap;
@@ -15,13 +21,11 @@ import flash.display.Bitmap;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
-import flash.text.TextField;
-import flash.utils.getTimer;
 import flash.utils.setTimeout;
 
 //import net.hires.debug.Stats;
 
-[SWF(width="600", height="360", frameRate=60, backgroundColor='0x444444')]
+[SWF(width="600", height="337", frameRate=60, backgroundColor='0x444444')]
 
 public class ContentViewer extends Sprite
 {
@@ -30,17 +34,12 @@ public class ContentViewer extends Sprite
     public var loader:FileLoader;
     public var animation:Animation;
     public var sound:SoundPlayer;
-    public var timeLine:TimeLine;
+    //public var timeLine:TimeLine;
     public var progress:Progress;
     public var projectPath:String;
     public var keyboard:Keyboard;
 
     public var actived:Boolean;
-
-    private var _time:int;
-    private var _old:int = 0;
-    private var _new:int = 0;
-    private var _textBox:TextField;
 
     public var playIcon:Sprite;
     public var pauseIcon:Sprite;
@@ -50,11 +49,17 @@ public class ContentViewer extends Sprite
 
     public static const W:int = 600;
     public static const H:int = 337;
+    private var _topics:Array;
+    private var _topicFunc:Function;
+    private var _updateFunc:Function;
+    private var _totalTime:String;
 
+    public static var address:String;
+    private var timeOut:uint;
 
     public function ContentViewer()
     {
-        trace('new: ContentViewer')
+        trace('new: ContentViewer');
         addEventListener(Event.ADDED_TO_STAGE, init);
     }
 
@@ -70,12 +75,30 @@ public class ContentViewer extends Sprite
         addChild(board);
 
         sound = new SoundPlayer(this);
+        sound.addEventListener('loaded', dispachLoaded);
+        sound.addEventListener('finish', dispachFinish);
 
         progress = new Progress(this);
         addChild(progress);
 
-        timeLine = new TimeLine(this, 0, 337+5, 600, 13);
-        addChild(timeLine);
+        //timeLine = new TimeLine(this, 0, 337+5, 600, 13);
+        //addChild(timeLine);
+
+        try
+        {
+            address = ExternalInterface.call("window.location.href.toString");
+        }
+        catch (e)
+        {
+            try
+            {
+                address = root.loaderInfo.url
+            }
+            catch (e)
+            {
+                address = 'rian-contentviewer-1'
+            }
+        }
 
         animation = new Animation(this);
 
@@ -106,18 +129,26 @@ public class ContentViewer extends Sprite
         }
 
 
-        //board.addEventListener(MouseEvent.CLICK, click);
+        board.addEventListener(MouseEvent.CLICK, click);
 
-        _textBox = new TextField();
-        _textBox.y = 150;
-        _textBox.width = 300;
-        _textBox.height = H - _textBox.y;
-        addChild(_textBox);
-
-        load('D:/Projects/IdeaProjects/Template/Main/lessons/', '5');
+        //load('D:/Projects/IdeaProjects/Template/Main/lessons/', '5');
+        timeOut = setTimeout(load, 1500, 'D:/Projects/IdeaProjects/Template/Main/lessons/', '6');
 
         //addChild(new Stats());
 
+    }
+
+    public function dispachFinish(e:Event = null):void
+    {
+        if(e == null)
+            e = new Event('finish');
+
+        dispatchEvent(e);
+    }
+
+    private function dispachLoaded(event:Event):void
+    {
+        dispatchEvent(event);
     }
 
 
@@ -132,17 +163,22 @@ public class ContentViewer extends Sprite
 
     private function click(event:MouseEvent):void
     {
+        setTopicNumber(4);
         //percent = mouseX/W;
     }
 
     ///////////////////////////////
-    public function load(dir:String, file:String):void
+    public function load(dir:String, file:String, updateFunc:Function = null, topicUpdater:Function = null):void
     {
+        clearTimeout(timeOut);
+
         actived = true;
         projectPath = dir + file + '.rian';
         reset();
         this.folder = dir + file + '/';
         loader.load(projectPath);
+        _topicFunc = topicUpdater;
+        _updateFunc = updateFunc;
     }
 
     public function get duration():Number
@@ -152,17 +188,40 @@ public class ContentViewer extends Sprite
 
     public function get percent():Number
     {
-        return sound.percent;
+        //return sound.percent;
+        var p:Number = (sound.time - animation.startTime) / animation.duration;
+
+        if(p < 0)
+            p = 0;
+        else if(p > 1)
+            p = 1;
+
+        return p;
     }
 
-    public function get time():String
+    public function get currentTime():String
     {
-        return sound.timeString;
+        //return sound.timeString;
+        return Utils.timeFormat(1000 * time)
+    }
+
+    public function get time():Number
+    {
+        //return sound.time;
+        var time:Number = sound.time - animation.startTime;
+
+        if(time < 0)
+            time = 0;
+        else if(time > animation.duration)
+            time = animation.duration;
+
+        return time;
     }
 
     public function get totalTime():String
     {
-        return sound.totalString;
+        //return sound.totalString;
+        return _totalTime;
     }
 
     public function get loaded():Boolean
@@ -176,11 +235,13 @@ public class ContentViewer extends Sprite
         if(!loaded)
             return;
 
+        //animation.resetTimes();
+        //sound.percent = p;
         animation.resetTimes();
-        sound.percent = p;
+        sound.time =  animation.startTime + p*(animation.duration);
     }
 
-    public function setTime(time:Number):void
+    public function set time(time:Number):void
     {
         if(!loaded)
             return;
@@ -196,17 +257,35 @@ public class ContentViewer extends Sprite
         sound.stop();
     }
 
+    public function pausePlay():void
+    {
+        keyboard.pausePlay();
+    }
+
+    public function prev():void
+    {
+        //time = animation.prevTime;
+        animation.prevTopic();
+    }
+
+    public function next():void
+    {
+        //time = animation.nextTime;
+        animation.nextTopic();
+    }
+
     public function replay():void
     {
         //trace('replay');
         actived = true;
 
         animation.resetTimes();
+        animation.resetTopic();
         sound.stop();
         sound.play(0);
     }
 
-    public function pause():void
+    public function hide():void
     {
         actived = false;
         //trace('pause');
@@ -225,6 +304,32 @@ public class ContentViewer extends Sprite
         //trace('resume');
         sound.resume();
     }
+
+    public function pause():void
+    {
+        sound.pause();
+    }
+
+    public function setTopicNumber(num:int):String
+    {
+        return animation.newTopic(num);
+    }
+
+    public function get quizScore():Number
+    {
+        return animation.quizScore;
+    }
+
+    public function set quizScore(n:Number):void
+    {
+        animation.quizScore = n;
+    }
+
+    public function getQuiz(i:int):Array
+    {
+        return animation.getQuiz(i);
+    }
+
     ///////////////////////////////
 
     public override function set visible(v:Boolean):void
@@ -233,33 +338,37 @@ public class ContentViewer extends Sprite
         super.visible = v;
     }
 
-    public function setTimer():void
-    {
-        _time = getTimer();
-    }
-
-    public function traceTime(s:String):void
-    {
-        if(s == 'new Type')
-            _new += getTimer() - _time;
-        else
-            _old += getTimer() - _time;
-        ////trace('old',_old,'new',_new);
-        _textBox.text = 'old ' + _old + ' new ' + _new // + ' ' + String(animation._show.length)
-    }
-
-    public function add(s):void
-    {
-        if(s == null)
-            _textBox.text = String(Math.random());
-        else
-            _textBox.text = _textBox.text + '\n' + String(s);
-    }
-
     public static function ShowVolume(percent:Number):void
     {
         if(_volume)
             _volume.show(percent);
+    }
+
+    public function get topics():Array
+    {
+        trace('get topics')
+        return _topics;
+    }
+
+    public function set topics(list:Array):void
+    {
+        trace('set topics');
+        _topics = list;
+        animation.topics = list;
+        dispatchEvent(new Event('topics'))
+    }
+
+    public function activeTopic(i:int):void
+    {
+        _totalTime = Utils.timeFormat(animation.duration * 1000);
+        if(_topicFunc)
+            _topicFunc(i);
+    }
+
+    public function update():void
+    {
+        if(_updateFunc)
+            _updateFunc();
     }
 }
 }

@@ -79,7 +79,27 @@ public class FileLoader
 
             if(i == 'topics')
             {
-                //trace('topic', obj);
+                var topicsList:Array = [];
+                for(var str:String in obj)
+                {
+                    var quizObject:Object = {text:obj[str].text, time:obj[str].time};
+
+                    if(obj[str].id)
+                    {
+                        quizObject.quiz = obj[str].quiz;
+                        quizObject.id = obj[str].id;
+                        var score:Object = Client.load('quiz_score_' + quizObject.id);
+                        if(score == null)
+                            quizObject.score = -1;
+                        else
+                            quizObject.score = score;
+                    }
+
+                    topicsList.push(quizObject);
+                }
+
+                Utils.sortArrayByField(topicsList, 'time');
+                main.topics = topicsList;
                 continue;
             }
 

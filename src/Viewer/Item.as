@@ -352,7 +352,7 @@ public class Item extends Sprite
                 break;
 
             default:
-                trace('remove', type);
+                trace('no motion', type);
                 break;
         }
     }

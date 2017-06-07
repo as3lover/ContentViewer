@@ -149,5 +149,86 @@ public class Utils
             TweenMax.to(obj, duration/3, {delay:duration/3, alpha:0});
         }
     }
+
+    public static function traceObject(obj:Object, t:String =''):void
+    {
+        for(var i:String in obj)
+        {
+            if(obj[i] is Number || obj[i] is String || obj[i] is int || obj[i] is uint || obj[i] is Boolean)
+            {
+                trace(t,i,obj[i])
+            }
+            else if(obj[i] is Array)
+            {
+                trace(t,i,'Array:')
+                traceArray(obj[i], t+'\t');
+            }
+            else
+            {
+                trace(t,i);
+                traceObject(obj[i], t+'\t')
+            }
+        }
+    }
+
+    public static function traceArray(list:Array, t:String=''):void
+    {
+        for(var i:int=0; i<list.length; i++)
+        {
+            if(list[i] is Array)
+            {
+                trace(t,i,'Array:');
+                traceArray(list[i], t+'\t');
+            }
+            else if(list[i] is Number || list[i] is String || list[i] is int || list[i] is uint || list[i] is Boolean)
+            {
+                trace(t, i, list[i]);
+            }
+            else
+            {
+                trace(t,'Object:');
+                traceObject(list[i], t+'\t')
+            }
+        }
+    }
+
+    public static function sortArrayByField(list:Array, field:String):void
+    {
+        var len:int = list.length;
+        for(var i:int=0; i<len-1; i++)
+        {
+            for(var j:int=len-1; j>i; j--)
+            {
+                if(list[j][field] < list[j-1][field])
+                    Utils.swap(list, j, j-1);
+            }
+        }
+    }
+
+    public static function swap(list:Array, i:int, j:int):void
+    {
+        var temp:Object = list[i];
+        list[i] = list[j];
+        list[j] = temp
+    }
+
+    public static function copyArray(list:Array):Array
+    {
+        if(list)
+            return [].concat(list);
+        else
+            return [];
+    }
+
+    public static function shuffle(list:Array):Array
+    {
+        list.sort(randomize);
+        return list;
+    }
+
+    private static function randomize (a:*,b:*):int
+    {
+        return (Math.random() > .5 ) ? 1 : -1;
+    }
 }
 }
