@@ -105,7 +105,21 @@ public class Item extends Sprite
         setState();
 
         if(parent)
-            parent.swapChildren(this, parent.getChildAt(_index));
+        {
+            try
+            {
+                parent.swapChildren(this, parent.getChildAt(_index));
+            }
+            catch (e)
+            {
+                if(_index >= parent.numChildren)
+                    _index = parent.numChildren-1;
+                else if(_index < 1)
+                    _index = 1;
+
+                parent.swapChildren(this, parent.getChildAt(_index));
+            }
+        }
         else
             return;
 

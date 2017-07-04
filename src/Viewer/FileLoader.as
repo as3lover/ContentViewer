@@ -27,12 +27,24 @@ public class FileLoader
         main = Main;
     }
 
+    public function loadText(path:String, after:Function):void
+    {
+        var loader:URLLoader = new URLLoader();
+        loader.addEventListener(Event.COMPLETE, onLoaded);
+        function onLoaded(e:Event):void
+        {
+            after(e.target.data);
+        }
+
+        loader.load(new URLRequest(path));
+    }
+
 
     public function load(path:String):void
     {
         _stop = false;
 
-        main.progress.text = 'Connecting...';
+        //main.progress.text = 'Connecting...';
         main.progress.percent = 0;
 
         var loader:URLLoader = new URLLoader();
@@ -127,14 +139,14 @@ public class FileLoader
 
         var n:int = 0;
         setTimeout(loadItem, 4);
-        main.progress.text = 'Loading Contents...';
+        //main.progress.text = 'Loading Contents...';
 
         function loadItem():void
         {
             if(_stop)
                 return;
 
-            main.progress.percent = n/list.length;
+            main.progress.percent = (n/list.length)/2;
             if(n < list.length)
             {
                 item = Item(list[n]);

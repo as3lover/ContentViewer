@@ -64,6 +64,7 @@ public class Progress extends Sprite
         {
             _bar.scaleX = p;
             visible = true;
+            text = String(int(p*100)) + ' %'
         }
     }
 

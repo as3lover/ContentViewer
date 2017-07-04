@@ -37,7 +37,7 @@ public class SoundPlayer extends Sprite
     public function load(file:String):void
     {
         stop();
-        main.progress.text = 'Loading Sound...';
+        //main.progress.text = 'Loading Sound...';
         loaded = false;
         _channel.removeEventListener(Event.SOUND_COMPLETE,finished);
         _sound = null;
@@ -53,11 +53,11 @@ public class SoundPlayer extends Sprite
         if(_sound.bytesTotal)
             p = _sound.bytesLoaded / _sound.bytesTotal;
 
-        main.progress.percent = p;
+        main.progress.percent = .5 + p/2;
 
         if(p == 1)
         {
-            main.progress.text = 'Loaded';
+            //main.progress.text = 'Loaded';
             removeEventListener(Event.ENTER_FRAME, ef);
             loaded = true;
             main.animation.start();

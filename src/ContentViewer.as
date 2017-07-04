@@ -129,10 +129,10 @@ public class ContentViewer extends Sprite
         }
 
 
-        board.addEventListener(MouseEvent.CLICK, click);
+        //board.addEventListener(MouseEvent.CLICK, click);
 
         //load('D:/Projects/IdeaProjects/Template/Main/lessons/', '5');
-        timeOut = setTimeout(load, 1500, 'D:/Projects/IdeaProjects/Template/Main/lessons/', '6');
+        timeOut = setTimeout(load, 1500, 'E:/Morteza/Projects/IdeaProjects/Template/Main/lessons/', '7');
 
         //addChild(new Stats());
 
@@ -163,7 +163,7 @@ public class ContentViewer extends Sprite
 
     private function click(event:MouseEvent):void
     {
-        setTopicNumber(4);
+        //setTopicNumber(4);
         //percent = mouseX/W;
     }
 
