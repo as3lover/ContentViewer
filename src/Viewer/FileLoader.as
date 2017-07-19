@@ -4,9 +4,14 @@
 package Viewer
 {
 
+import SpriteSheet.PackLoader;
+
 import flash.display.Bitmap;
 import flash.display.Loader;
 import flash.display.LoaderInfo;
+import flash.display.Shape;
+import flash.display.Sprite;
+import flash.display.Stage;
 import flash.events.Event;
 import flash.events.IOErrorEvent;
 import flash.net.URLLoader;
@@ -21,10 +26,14 @@ public class FileLoader
     private var _loading:Boolean;
     private var _list:Array;
     private var main:ContentViewer;
+    private var sheets:Object;
+    private var p:Sprite;
+    private var allbitmaps:Object = new Object();
 
     public function FileLoader(Main:ContentViewer)
     {
         main = Main;
+        sheets = new Object();
     }
 
     public function loadText(path:String, after:Function):void
@@ -44,7 +53,7 @@ public class FileLoader
     {
         _stop = false;
 
-        //main.progress.text = 'Connecting...';
+        main.progress.text = 'Connecting...';
         main.progress.percent = 0;
 
         var loader:URLLoader = new URLLoader();
@@ -139,14 +148,14 @@ public class FileLoader
 
         var n:int = 0;
         setTimeout(loadItem, 4);
-        //main.progress.text = 'Loading Contents...';
+        main.progress.text = 'Loading Contents';
 
         function loadItem():void
         {
             if(_stop)
                 return;
 
-            main.progress.percent = (n/list.length)/2;
+            main.progress.percent = (n/list.length);
             if(n < list.length)
             {
                 item = Item(list[n]);
@@ -204,6 +213,12 @@ public class FileLoader
 
         _loading = true;
 
+        if(PackLoader.exist(path))
+        {
+            PackLoader.load(path, onComplete)
+            return;
+        }
+
         //var time:int = getTimer();
 
         var loader:Loader = new Loader();
@@ -215,7 +230,13 @@ public class FileLoader
         function onError(event:IOErrorEvent):void
         {
             trace('Can Not Load File:', path);
-            func(null)
+            if(!p)
+            {
+                p = new Sprite();
+                p.graphics.beginFill(0);
+                p.graphics.drawRect(0,0,100,100);
+            }
+            onComplete(Utils.objectToBitmap(p));
         }
 
         function loadedFile (event:Event):void
@@ -257,6 +278,64 @@ public class FileLoader
      public function stop():void
     {
         _stop = true;
+    }
+
+    public function loadSheet(_fileName:String, setBitmap:Function, b:Boolean, pos:Object, sheetNum:int, id:int):void
+    {
+        if(sheets['s' + String(sheetNum)])
+        {
+            crop(sheets['s' + String(sheetNum)]);
+        }
+        else if(allbitmaps['s'+String(sheetNum)+'id'+String(id)])
+        {
+            setBitmap(new Bitmap(allbitmaps['s'+String(sheetNum)+'id'+String(id)]));
+        }
+        else
+        {
+            loadBitmap(main.folder + String(sheetNum) + '.png', loaded)
+        }
+
+        function loaded(bit:Bitmap)
+        {
+            var sheet:Sprite = new Sprite();
+            sheet.addChild(bit);
+
+            var mask:Shape = new Shape();
+            mask.graphics.beginFill(0);
+            mask.graphics.drawRect(0,0,500,500);
+
+            sheet.addChild(mask)
+
+            sheet.mask = mask;
+
+            sheets['s' + String(sheetNum)] = sheet;
+            crop(sheet);
+        }
+
+        function crop(sheet:Sprite):Bitmap
+        {
+            sheet.mask.width = pos.w;
+            sheet.mask.height = pos.h;
+
+            Bitmap(sheet.getChildAt(0)).x = - pos.x;
+            Bitmap(sheet.getChildAt(0)).y = - pos.y;
+
+            sheet.mask = sheet.mask;
+
+            var bit:Bitmap = Utils.objectToBitmap(sheet, pos.w, pos.h);
+            ChangeBit(bit);
+            bit.smoothing = true;
+            allbitmaps['s'+String(sheetNum)+'id'+String(id)] = bit.bitmapData;
+            setBitmap(bit);
+        }
+    }
+
+    public function loadedSheet(sheetNum:int):Boolean
+    {
+        if(sheets['s' + String(sheetNum)])
+                return true
+        else
+                return false;
     }
 }
 }

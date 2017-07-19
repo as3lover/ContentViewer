@@ -6,7 +6,12 @@ package src2
 import com.greensock.TweenLite;
 import com.greensock.TweenMax;
 
+import flash.display.Bitmap;
+import flash.display.BitmapData;
+
 import flash.display.DisplayObject;
+import flash.display.Shape;
+import flash.display.Sprite;
 
 
 public class Utils
@@ -229,6 +234,18 @@ public class Utils
     private static function randomize (a:*,b:*):int
     {
         return (Math.random() > .5 ) ? 1 : -1;
+    }
+
+    public static function objectToBitmap(obj:DisplayObject, width:int=-1, height:int=-1):Bitmap
+    {
+        if(width == -1)
+                width = obj.width;
+        if(height == -1)
+                height = obj.height;
+
+        var bitmapData:BitmapData = new BitmapData(width, height, true, 0x00000000);
+        bitmapData.draw(obj);
+        return new Bitmap(bitmapData);
     }
 }
 }

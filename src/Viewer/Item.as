@@ -47,6 +47,10 @@ public class Item extends Sprite
     private var main:ContentViewer;
     private var _showPercent:Number;
     private var _hidePercent:Number;
+    private var _sheet:int;
+    private var _position:Object;
+    private var _id:int;
+    private var _loaded:Boolean;
 
     public function Item(obj:Object, Main:ContentViewer)
     {
@@ -83,6 +87,17 @@ public class Item extends Sprite
         _stopTime = obj.stopTime;
         _showDuration = obj.showDuration;
         _hideDuration = obj.hideDuration;
+
+        if(_stopTime == -1)
+            _stopTime = 999999999;
+
+        //trace('obj.id', obj.id, obj.position)
+        if(obj.hasOwnProperty('id'))
+        {
+            _sheet = int(obj.sheet);
+            _position = obj.position;
+            _id = int(obj.id)
+        }
 
         main.board.addChild(this);
 
@@ -125,7 +140,27 @@ public class Item extends Sprite
 
         motion = _motion;
 
-        main.loader.loadBitmap(_fileName, setBitmap, true);
+        if(!_position)
+        {
+            main.loader.loadBitmap(_fileName, setBitmap, true);
+        }
+        else
+        {
+            if(!main.loader.loadedSheet(_sheet) || _startTime < 15)
+            {
+                loadFromSheet();
+            }
+            else
+            {
+                dispatchEvent(complete);
+            }
+        }
+    }
+
+    private function loadFromSheet():void
+    {
+        _loaded = true;
+        main.loader.loadSheet(_fileName, setBitmap, true, _position, _sheet, _id);
     }
 
 
@@ -157,8 +192,9 @@ public class Item extends Sprite
         else
         {
             main.animation.add(this);
+            if(!_loaded)
+                loadFromSheet();
             //trace('add', _number);
-
         }
     }
 

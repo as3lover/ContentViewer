@@ -216,13 +216,13 @@ public class Animation
 
     public function newTopic(num:int):String
     {
-        trace('newTopic', num)
+        //trace('newTopic', num)
         for(var i:int=0; i<num; i++)
         {
             if(_topics[i].id)
             {
                 var score:Object = _topics[i].score;
-                trace('score', score);
+                //trace('score', score);
                 if(score == -1)
                 {
                     return String('ابتدا باید به سؤالات ' + _topics[i].text + ' پاسخ دهید.');

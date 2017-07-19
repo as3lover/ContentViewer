@@ -16,6 +16,7 @@ public class Progress extends Sprite
     private var _text:TextField;
     private var _f:TextFormat;
     private var main:ContentViewer;
+    private var _textString:String = '';
 
     public function Progress(Main:ContentViewer)
     {
@@ -64,14 +65,14 @@ public class Progress extends Sprite
         {
             _bar.scaleX = p;
             visible = true;
-            text = String(int(p*100)) + ' %'
+            _text.text = _textString + String(int(p*100)) + ' %';
+            _text.setTextFormat(_f);
         }
     }
 
     public function set text(text:String):void
     {
-        _text.text = text;
-        _text.setTextFormat(_f);
+        _textString = text + ' ';
     }
 }
 }

@@ -2,8 +2,8 @@
 <module type="Flex" version="4">
   <component name="FlexBuildConfigurationManager" active="ContentViewer">
     <configurations>
-      <configuration name="ContentViewer" pure-as="true" output-type="Library" output-file="Viewer.swc" output-folder="$MODULE_DIR$/out/production/ContentViewer">
-        <dependencies target-player="25.0">
+      <configuration name="ContentViewer" target-platform="Desktop" pure-as="true" output-type="Library" output-file="Viewer.swc" output-folder="$MODULE_DIR$/out/production/ContentViewer">
+        <dependencies>
           <entries>
             <entry library-id="d58c3f80-0aef-41f2-97cf-d102613b191f">
               <dependency linkage="Merged" />

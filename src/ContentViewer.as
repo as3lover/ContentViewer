@@ -132,7 +132,8 @@ public class ContentViewer extends Sprite
         //board.addEventListener(MouseEvent.CLICK, click);
 
         //load('D:/Projects/IdeaProjects/Template/Main/lessons/', '5');
-        timeOut = setTimeout(load, 1500, 'E:/Morteza/Projects/IdeaProjects/Template/Main/lessons/', '7');
+        //timeOut = setTimeout(load, 1500, 'G:/Projects/IdeaProjects/Template/Main/lessons/', '7');
+        timeOut = setTimeout(load, 1500, 'G:\\Telegram\\Downloads\\estratejik part 2\\estratejik part 2\\', '1');
 
         //addChild(new Stats());
 
@@ -346,13 +347,11 @@ public class ContentViewer extends Sprite
 
     public function get topics():Array
     {
-        trace('get topics')
         return _topics;
     }
 
     public function set topics(list:Array):void
     {
-        trace('set topics');
         _topics = list;
         animation.topics = list;
         dispatchEvent(new Event('topics'))
