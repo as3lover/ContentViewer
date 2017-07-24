@@ -175,7 +175,7 @@ public class ContentViewer extends Sprite
         clearTimeout(timeOut);
 
         actived = true;
-        projectPath = dir + file + '.json';
+        projectPath = dir + file + '.txt';
         reset();
         this.folder = dir + file + '/';
         loader.load(projectPath);
