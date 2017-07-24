@@ -221,7 +221,7 @@ public class SoundPlayer extends Sprite
         resume();
     }
 	////////////////////////
-	public static function set volume(volume:int):void
+	public function set volume(volume:int):void
 	{
 		if(volume > 100)
 				volume = 100;
@@ -234,20 +234,20 @@ public class SoundPlayer extends Sprite
 		if(_channel)
 				_channel.soundTransform = _transform;
 
-		ContentViewer.ShowVolume(_volume/2);
+		main.ShowVolume(_volume/2);
 	}
 
-	public static function get volume():int
+	public function get volume():int
 	{
 		return int(_volume * 50);
 	}
 
-    public static function volumeUp():void
+    public function volumeUp():void
     {
         volume += 5;
     }
 
-    public static function volumeDown():void
+    public function volumeDown():void
     {
         volume -= 5;
     }

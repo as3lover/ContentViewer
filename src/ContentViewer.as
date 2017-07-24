@@ -45,7 +45,7 @@ public class ContentViewer extends Sprite
     public var pauseIcon:Sprite;
 
 
-    private static var _volume:Volume;
+    private var _volume:Volume;
 
     public static const W:int = 600;
     public static const H:int = 337;
@@ -104,7 +104,7 @@ public class ContentViewer extends Sprite
 
         loader = new FileLoader(this);
 
-        keyboard = new Keyboard(stage, this);
+        keyboard = new Keyboard(stage, this, sound);
 
         _volume = new Volume();
         addChild(_volume);
@@ -340,7 +340,7 @@ public class ContentViewer extends Sprite
         super.visible = v;
     }
 
-    public static function ShowVolume(percent:Number):void
+    public function ShowVolume(percent:Number):void
     {
         if(_volume)
             _volume.show(percent);

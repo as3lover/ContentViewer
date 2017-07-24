@@ -4,10 +4,8 @@
     <list default="true" id="0d86f67c-6ca0-4f50-ba9b-d786dad477fe" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ContentViewer.as" afterPath="$PROJECT_DIR$/src/ContentViewer.as" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Viewer/Animation.as" afterPath="$PROJECT_DIR$/src/Viewer/Animation.as" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Viewer/FileLoader.as" afterPath="$PROJECT_DIR$/src/Viewer/FileLoader.as" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Viewer/Item.as" afterPath="$PROJECT_DIR$/src/Viewer/Item.as" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/items/TextMask.as" afterPath="$PROJECT_DIR$/src/items/TextMask.as" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/SoundPlayer.as" afterPath="$PROJECT_DIR$/src/SoundPlayer.as" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Viewer/Keyboard.as" afterPath="$PROJECT_DIR$/src/Viewer/Keyboard.as" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -29,13 +27,23 @@
       <file leaf-file-name="ContentViewer.as" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ContentViewer.as">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="136" column="10" lean-forward="false" selection-start-line="136" selection-start-column="10" selection-end-line="136" selection-end-column="10" />
+            <state relative-caret-position="305">
+              <caret line="106" column="25" lean-forward="false" selection-start-line="106" selection-start-column="25" selection-end-line="106" selection-end-column="25" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#54#78#0" expanded="true" />
                 <element signature="e#272#293#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Keyboard.as" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Viewer/Keyboard.as">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="230">
+              <caret line="59" column="25" lean-forward="false" selection-start-line="59" selection-start-column="25" selection-end-line="59" selection-end-column="25" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -52,7 +60,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FileLoader.as" pinned="false" current-in-tab="true">
+      <file leaf-file-name="FileLoader.as" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Viewer/FileLoader.as">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="334">
@@ -61,6 +69,16 @@
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#62#92#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Volume.as" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Volume.as">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-194">
+              <caret line="9" column="18" lean-forward="false" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="18" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -75,21 +93,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Progress.as" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Progress.as">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="731">
-              <caret line="49" column="27" lean-forward="false" selection-start-line="49" selection-start-column="27" selection-end-line="49" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="SoundPlayer.as" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/SoundPlayer.as">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="62" column="30" lean-forward="false" selection-start-line="62" selection-start-column="30" selection-end-line="62" selection-end-column="30" />
+            <state relative-caret-position="179">
+              <caret line="247" column="5" lean-forward="true" selection-start-line="247" selection-start-column="5" selection-end-line="247" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -138,7 +146,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>_topics =</find>
       <find>_topics</find>
       <find>= to</find>
       <find>cloc</find>
@@ -168,6 +175,7 @@
       <find>dir</find>
       <find>sett</find>
       <find>load()</find>
+      <find>volume</find>
     </findStrings>
     <replaceStrings>
       <replace>\\</replace>
@@ -209,21 +217,21 @@
         <option value="$PROJECT_DIR$/src/Volume.as" />
         <option value="$PROJECT_DIR$/src/Viewer/assets.as" />
         <option value="$PROJECT_DIR$/src/Viewer/Board.as" />
-        <option value="$PROJECT_DIR$/src/Viewer/Keyboard.as" />
         <option value="$PROJECT_DIR$/src/Viewer/TimeLine.as" />
         <option value="$PROJECT_DIR$/src/LocalObject.as" />
         <option value="$PROJECT_DIR$/src/Client.as" />
         <option value="$PROJECT_DIR$/src/Viewer/Sheet.as" />
         <option value="$PROJECT_DIR$/src/Viewer/Sheets.as" />
-        <option value="$PROJECT_DIR$/src/SoundPlayer.as" />
         <option value="$PROJECT_DIR$/src/Progress.as" />
         <option value="$PROJECT_DIR$/src/SpriteSheet/PackLoader.as" />
         <option value="$PROJECT_DIR$/src/src2/Utils.as" />
         <option value="$PROJECT_DIR$/src/Viewer/Animation.as" />
         <option value="$PROJECT_DIR$/src/items/TextMask.as" />
-        <option value="$PROJECT_DIR$/src/ContentViewer.as" />
         <option value="$PROJECT_DIR$/src/Viewer/Item.as" />
         <option value="$PROJECT_DIR$/src/Viewer/FileLoader.as" />
+        <option value="$PROJECT_DIR$/src/ContentViewer.as" />
+        <option value="$PROJECT_DIR$/src/SoundPlayer.as" />
+        <option value="$PROJECT_DIR$/src/Viewer/Keyboard.as" />
       </list>
     </option>
   </component>
@@ -295,6 +303,42 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Viewer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ContentViewer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ContentViewer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ContentViewer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ContentViewer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SpriteSheet" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -757,12 +801,12 @@
       <workItem from="1497053227833" duration="2375000" />
       <workItem from="1499145674551" duration="1264000" />
       <workItem from="1500210351835" duration="17439000" />
-      <workItem from="1500838381607" duration="5878000" />
+      <workItem from="1500838381607" duration="6693000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="253910000" />
+    <option name="totallyTimeSpent" value="254725000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
@@ -771,7 +815,7 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32767624" sideWeight="0.14055637" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32767624" sideWeight="0.14055637" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -785,7 +829,7 @@
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24875" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32913387" sideWeight="0.49707174" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32898173" sideWeight="0.49707174" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1029,17 +1073,6 @@
       </provider>
     </entry>
     <entry file="jar://D:/Softwares/Adobe/AIRSDK_Compiler/frameworks/libs/player/25.0/playerglobal.swc!/library.swf" />
-    <entry file="file://$PROJECT_DIR$/src/Volume.as">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="64">
-          <caret line="22" column="27" lean-forward="false" selection-start-line="22" selection-start-column="27" selection-end-line="22" selection-end-column="27" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="e#53#81#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Viewer/assets.as">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -1067,17 +1100,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
           <caret line="1635" column="0" lean-forward="false" selection-start-line="1635" selection-start-column="0" selection-end-line="1635" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Viewer/Keyboard.as">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="302">
-          <caret line="97" column="15" lean-forward="true" selection-start-line="97" selection-start-column="15" selection-end-line="97" selection-end-column="15" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="e#61#96#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1128,14 +1150,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/SoundPlayer.as">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="62" column="30" lean-forward="false" selection-start-line="62" selection-start-column="30" selection-end-line="62" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Viewer/Animation.as">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="246">
@@ -1149,18 +1163,6 @@
         <state relative-caret-position="212">
           <caret line="24" column="23" lean-forward="false" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ContentViewer.as">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="136" column="10" lean-forward="false" selection-start-line="136" selection-start-column="10" selection-end-line="136" selection-end-column="10" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#54#78#0" expanded="true" />
-            <element signature="e#272#293#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1182,6 +1184,42 @@
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#62#92#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Volume.as">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-194">
+          <caret line="9" column="18" lean-forward="false" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ContentViewer.as">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="305">
+          <caret line="106" column="25" lean-forward="false" selection-start-line="106" selection-start-column="25" selection-end-line="106" selection-end-column="25" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#54#78#0" expanded="true" />
+            <element signature="e#272#293#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/SoundPlayer.as">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="247" column="5" lean-forward="true" selection-start-line="247" selection-start-column="5" selection-end-line="247" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Viewer/Keyboard.as">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="59" column="25" lean-forward="false" selection-start-line="59" selection-start-column="25" selection-end-line="59" selection-end-column="25" />
+          <folding />
         </state>
       </provider>
     </entry>
