@@ -148,6 +148,7 @@ public class FileLoader
 
         var n:int = 0;
         setTimeout(loadItem, 4);
+        var pauseBetweenLoads:int = 0;
         main.progress.text = 'Loading Contents';
 
         function loadItem():void
@@ -175,7 +176,18 @@ public class FileLoader
                 return;
 
             item.removeEventListener(Event.COMPLETE, after);
-            loadItem();
+
+            pauseBetweenLoads++;
+
+            if(pauseBetweenLoads > 10)
+            {
+                pauseBetweenLoads = 0;
+                setTimeout(loadItem,1);
+            }
+            else
+            {
+                loadItem();
+            }
         }
 
         function finish():void

@@ -81,6 +81,9 @@ public class Animation
         var i:int;
         _len =  int(main.sound.total/STEP);
 
+        //
+        _len++;
+        //
 
         for(i=0; i<_len; i++)
         {
@@ -94,7 +97,15 @@ public class Animation
         for(i = 0 ; i < _len; i++)
         {
             i2 = int(Item(_list[i]).startTime / STEP);
-            _master[i2].push(_list[i]);
+            try
+            {
+                _master[i2].push(_list[i]);
+            }
+            catch (e)
+            {
+                trace(e);
+                trace(_master.length, _list.length, i2, i);
+            }
         }
 
         main.board.addEventListener(Event.ENTER_FRAME, checkTimes);

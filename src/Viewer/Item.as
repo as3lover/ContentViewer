@@ -51,6 +51,7 @@ public class Item extends Sprite
     private var _position:Object;
     private var _id:int;
     private var _loaded:Boolean;
+    private var _direction:String = 'rtl';
 
     public function Item(obj:Object, Main:ContentViewer)
     {
@@ -68,6 +69,8 @@ public class Item extends Sprite
             if(_typingEndTime != -1)
             {
                 _mask = new TextMask();
+                if(obj.direction)
+                    _direction = obj.direction;
                 addChild(_mask);
             }
         }
@@ -146,7 +149,7 @@ public class Item extends Sprite
         }
         else
         {
-            if(!main.loader.loadedSheet(_sheet) || _startTime < 15)
+            if(!main.loader.loadedSheet(_sheet) || _startTime < 5)
             {
                 loadFromSheet();
             }
@@ -341,7 +344,7 @@ public class Item extends Sprite
             addChild(_mask);
         }
 
-        _mask.update(_bitmap.x, _bitmap.y, _bitmap.width, _bitmap.height, _lines, percent);
+        _mask.update(_bitmap.x, _bitmap.y, _bitmap.width, _bitmap.height, _lines, percent, _direction);
 
         mask = _mask;
     }

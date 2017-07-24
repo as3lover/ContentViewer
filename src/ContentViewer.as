@@ -133,7 +133,8 @@ public class ContentViewer extends Sprite
 
         //load('D:/Projects/IdeaProjects/Template/Main/lessons/', '5');
         //timeOut = setTimeout(load, 1500, 'G:/Projects/IdeaProjects/Template/Main/lessons/', '7');
-        timeOut = setTimeout(load, 1500, 'G:\\Telegram\\Downloads\\estratejik part 2\\estratejik part 2\\', '1');
+        //timeOut = setTimeout(load, 1500, 'G:\\Telegram\\Downloads\\estratejik part 2\\estratejik part 2\\', '1');
+        //timeOut = setTimeout(load, 100, 'D:\\1\\', '1');
 
         //addChild(new Stats());
 
@@ -174,7 +175,7 @@ public class ContentViewer extends Sprite
         clearTimeout(timeOut);
 
         actived = true;
-        projectPath = dir + file + '.rian';
+        projectPath = dir + file + '.json';
         reset();
         this.folder = dir + file + '/';
         loader.load(projectPath);
