@@ -11,6 +11,8 @@ import Viewer.Keyboard;
 import flash.external.ExternalInterface;
 import flash.utils.clearTimeout;
 
+import media.MediaPlayer;
+
 import src2.Utils;
 
 //import Viewer.TimeLine;
@@ -33,7 +35,7 @@ public class ContentViewer extends Sprite
     public var folder:String;
     public var loader:FileLoader;
     public var animation:Animation;
-    public var sound:SoundPlayer;
+    public var myMedia:MediaPlayer;
     //public var timeLine:TimeLine;
     public var progress:Progress;
     public var projectPath:String;
@@ -59,7 +61,7 @@ public class ContentViewer extends Sprite
 
     public function ContentViewer()
     {
-        trace('new: ContentViewer');
+        trace('NEW: ContentViewer');
         addEventListener(Event.ADDED_TO_STAGE, init);
     }
 
@@ -74,9 +76,9 @@ public class ContentViewer extends Sprite
         board = new Board(this);
         addChild(board);
 
-        sound = new SoundPlayer(this);
-        sound.addEventListener('loaded', dispachLoaded);
-        sound.addEventListener('finish', dispachFinish);
+        myMedia = new SoundPlayer(this);
+        //media.addEventListener('loaded', dispachLoaded);
+        //media.addEventListener('finish', dispachFinish);
 
         progress = new Progress(this);
         addChild(progress);
@@ -104,7 +106,7 @@ public class ContentViewer extends Sprite
 
         loader = new FileLoader(this);
 
-        keyboard = new Keyboard(stage, this, sound);
+        keyboard = new Keyboard(stage, this, myMedia);
 
         _volume = new Volume();
         addChild(_volume);
@@ -129,9 +131,9 @@ public class ContentViewer extends Sprite
         }
 
 
-        //board.addEventListener(MouseEvent.CLICK, click);
+       // board.addEventListener(MouseEvent.CLICK, click);
 
-        //load('D:/Projects/IdeaProjects/Template/Main/lessons/', '5');
+        //load('D:/Projects/IdeaProjects/Template/Main 2/lessons/', '5');
         //timeOut = setTimeout(load, 1500, 'G:/Projects/IdeaProjects/Template/Main/lessons/', '7');
         //timeOut = setTimeout(load, 1500, 'G:\\Telegram\\Downloads\\estratejik part 2\\estratejik part 2\\', '1');
         //timeOut = setTimeout(load, 100, 'D:\\1\\', '1');
@@ -145,11 +147,13 @@ public class ContentViewer extends Sprite
         if(e == null)
             e = new Event('finish');
 
+        trace("dispachFinish");
         dispatchEvent(e);
     }
 
-    private function dispachLoaded(event:Event):void
+    public function dispachLoaded(event:Event):void
     {
+        trace("dispachLoaded");
         dispatchEvent(event);
     }
 
@@ -158,7 +162,7 @@ public class ContentViewer extends Sprite
     {
         //trace('reset');
         board.reset();
-        sound.reset();
+        myMedia.reset();
         loader.stop();
 
     }
@@ -166,7 +170,7 @@ public class ContentViewer extends Sprite
     private function click(event:MouseEvent):void
     {
         //setTopicNumber(4);
-        //percent = mouseX/W;
+        percent = mouseX/W;
     }
 
     ///////////////////////////////
@@ -185,13 +189,13 @@ public class ContentViewer extends Sprite
 
     public function get duration():Number
     {
-        return sound.total;
+        return myMedia.total;
     }
 
     public function get percent():Number
     {
         //return sound.percent;
-        var p:Number = (sound.time - animation.startTime) / animation.duration;
+        var p:Number = (myMedia.time - animation.startTime) / animation.duration;
 
         if(p < 0)
             p = 0;
@@ -210,7 +214,7 @@ public class ContentViewer extends Sprite
     public function get time():Number
     {
         //return sound.time;
-        var time:Number = sound.time - animation.startTime;
+        var time:Number = myMedia.time - animation.startTime;
 
         if(time < 0)
             time = 0;
@@ -228,7 +232,7 @@ public class ContentViewer extends Sprite
 
     public function get loaded():Boolean
     {
-        return sound.loaded;
+        return myMedia.loaded;
     }
 
     ///////////////////////////////
@@ -240,7 +244,7 @@ public class ContentViewer extends Sprite
         //animation.resetTimes();
         //sound.percent = p;
         animation.resetTimes();
-        sound.time =  animation.startTime + p*(animation.duration);
+        myMedia.time =  animation.startTime + p*(animation.duration);
     }
 
     public function set time(time:Number):void
@@ -249,14 +253,14 @@ public class ContentViewer extends Sprite
             return;
 
         animation.resetTimes();
-        sound.time = time;
+        myMedia.time = time;
     }
 
     public function stop():void
     {
         //trace('stop');
 
-        sound.stop();
+        myMedia.stop();
     }
 
     public function pausePlay():void
@@ -283,8 +287,8 @@ public class ContentViewer extends Sprite
 
         animation.resetTimes();
         animation.resetTopic();
-        sound.stop();
-        sound.play(0);
+        myMedia.stop();
+        myMedia.play(0);
     }
 
     public function hide():void
@@ -295,7 +299,7 @@ public class ContentViewer extends Sprite
         if(loaded)
         {
             //trace('sound.pause()')
-            sound.pause();
+            myMedia.pause();
         }
         else
             reset();
@@ -304,12 +308,12 @@ public class ContentViewer extends Sprite
     public function resume():void
     {
         //trace('resume');
-        sound.resume();
+        myMedia.resume();
     }
 
     public function pause():void
     {
-        sound.pause();
+        myMedia.pause();
     }
 
     public function setTopicNumber(num:int):String

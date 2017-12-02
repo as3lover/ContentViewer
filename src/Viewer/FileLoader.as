@@ -205,7 +205,7 @@ public class FileLoader
                 return;
 
             if(sound)
-                main.sound.load(main.folder + sound);
+                main.myMedia.load(main.folder + sound);
         }
 
     }

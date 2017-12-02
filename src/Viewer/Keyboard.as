@@ -8,38 +8,40 @@ import flash.display.Stage;
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
 
+import media.MediaPlayer;
+
 import src2.Utils;
 
 public class Keyboard
 {
-    private var stage:Stage;
-    private var main:ContentViewer;
-    private var sndPlayer:SoundPlayer;
+    private var _stage:Stage;
+    private var _main:ContentViewer;
+    private var _player:MediaPlayer;
 
-    public function Keyboard(stage:Stage, main:ContentViewer, sndPlayer:SoundPlayer)
+    public function Keyboard(stage:Stage, main:ContentViewer, player:MediaPlayer)
     {
-        this.stage = stage;
-        this.main = main;
-        this.sndPlayer = sndPlayer;
+        _stage = stage;
+        _main = main;
+        _player = player;
         stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
         stage.addEventListener(MouseEvent.MOUSE_WHEEL, onWheel);
     }
 
     private function onWheel(e:MouseEvent):void
     {
-        if(!main.actived)
+        if(!_main.actived)
             return;
 
         if(e.delta < 0)
-            sndPlayer.volumeDown();
+            _player.volumeDown();
         else
-            sndPlayer.volumeUp();
+            _player.volumeUp();
     }
 
 
     private function onKeyDown(e:KeyboardEvent):void
     {
-        if(!main.actived || !main.loaded)
+        if(!_main.actived || !_main.loaded)
                 return;
 
         switch (e.keyCode)
@@ -53,11 +55,11 @@ public class Keyboard
                 break;
 
             case 38://Up
-                sndPlayer.volumeUp();
+                _player.volumeUp();
                 break;
 
             case 40://Down
-                sndPlayer.volumeDown();
+                _player.volumeDown();
                 break;
 
             case 32://Space
@@ -72,18 +74,18 @@ public class Keyboard
 
     public function pausePlay():void
     {
-        if(!main.sound.loaded)
+        if(!_main.myMedia.loaded)
             return;
 
-        if(main.sound.pausePlay())
+        if(_main.myMedia.pausePlay())
         {
-            main.pauseIcon.visible = false;
-            Utils.zoomToast(main.playIcon);
+            _main.pauseIcon.visible = false;
+            Utils.zoomToast(_main.playIcon);
         }
         else
         {
-            main.playIcon.visible = false;
-            Utils.zoomToast(main.pauseIcon);
+            _main.playIcon.visible = false;
+            Utils.zoomToast(_main.pauseIcon);
         }
     }
 
@@ -97,7 +99,7 @@ public class Keyboard
             i *= 5;
 
         //trace(i);
-        main.time = main.sound.time + i;
+        _main.time = _main.myMedia.time + i;
     }
 }
 }

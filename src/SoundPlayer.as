@@ -8,15 +8,18 @@ import flash.media.SoundChannel;
 import flash.media.SoundTransform;
 import flash.net.URLRequest;
 
+import media.MediaPlayer;
 
-public class SoundPlayer extends Sprite
+
+public class SoundPlayer implements MediaPlayer
 {
+    private var _sprite:Sprite;
     private var _sound:Sound;
     private var _position:Number;
     private const buffer:int = 10;
     private var _playing:Boolean;
     private var _loaded:Boolean = false;
-    private var main:ContentViewer;
+    private var _main:ContentViewer;
 
     private static var _channel:SoundChannel;
     private static var _transform:SoundTransform;
@@ -24,7 +27,9 @@ public class SoundPlayer extends Sprite
 
     public function SoundPlayer(Main:ContentViewer)
     {
-        main = Main;
+        setMain(Main);
+
+        _sprite = new Sprite();
 
         // constructor code
         _transform= new SoundTransform();
@@ -33,18 +38,28 @@ public class SoundPlayer extends Sprite
         _channel = new SoundChannel();
     }
 
+    public function setMain(Main:ContentViewer):void
+    {
+        _main = Main;
+    }
+
     /////////////// Load File
     public function load(file:String):void
     {
         stop();
-        main.progress.text = 'Loading Sound';
+        progressText = 'Loading Sound';
         loaded = false;
         _channel.removeEventListener(Event.SOUND_COMPLETE,finished);
         _sound = null;
         _sound = new Sound();
         //_sound.load(new URLRequest(file), new SoundLoaderContext(buffer * 1000));
         _sound.load(new URLRequest(file));
-        addEventListener(Event.ENTER_FRAME, ef);
+        _sprite.addEventListener(Event.ENTER_FRAME, ef);
+    }
+
+    public function set progressText(txt:String):void
+    {
+        _main.progress.text =txt;
     }
 
     private function ef(event:Event):void
@@ -53,81 +68,38 @@ public class SoundPlayer extends Sprite
         if(_sound.bytesTotal)
             p = _sound.bytesLoaded / _sound.bytesTotal;
 
-        main.progress.percent = p;
+        progressPercent = p;
 
         if(p == 1)
         {
-            main.progress.text = 'Loaded';
-            removeEventListener(Event.ENTER_FRAME, ef);
+            progressText = 'Loaded';
+            _sprite.removeEventListener(Event.ENTER_FRAME, ef);
             loaded = true;
-            main.animation.start();
+            startAnimation();
             resume();
         }
 
     }
-	/*
-	 private function LoadURL2(path:String):void
-	 {
-	 var loader:Loader = new Loader();
-	 loader.contentLoaderInfo.addEventListener(Event.COMPLETE, loadedFile);
 
-	 loader.load(new URLRequest(path));
-	 loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onError);
+    public function startAnimation():void
+    {
+        _main.animation.start();
+    }
 
-	 function onError(e:IOErrorEvent):void
-	 {
-	 trace('Can Not Load File:', path);
-	 trace(e);
-	 }
-
-	 function loadedFile (event:Event):void
-	 {
-	 trace(LoaderInfo(event.target).content);
-	 }
-	 }
-
-	 private function LoadURL(file:String):void
-	 {
-	 stop();
-	 Main.loading.text = 'Loading Sound...';
-	 _loaded = false;
-	 _channel.removeEventListener(Event.SOUND_COMPLETE,finished);
-	 _sound = null;
-	 _sound = new Sound();
-	 var loader:URLLoader = new URLLoader(new URLRequest(file));
-	 loader.dataFormat = URLLoaderDataFormat.BINARY;
-	 addEventListener(Event.ENTER_FRAME, ef2);
-
-	 function ef2(event:Event):void
-	 {
-	 var p:Number = 0;
-	 if(loader.bytesTotal)
-	 p = loader.bytesLoaded / loader.bytesTotal;
-	 else
-	 Main.loading.text = String(Math.random());
-
-	 Main.loading.percent = p;
-
-	 if(p == 1)
-	 {
-	 var bytes:ByteArray = ByteArray(loader.data);
-	 bytes.position = 0;
-	 _sound.loadCompressedDataFromByteArray (bytes, bytes.length );
-	 Main.loading.text = 'Loaded';
-	 removeEventListener(Event.ENTER_FRAME, ef2);
-	 _loaded = true;
-	 resume();
-	 }
-	 }
-	 }
-	 */
-
-
-
+    public function set progressPercent(p:Number):void
+    {
+        _main.progress.percent = p;
+    }
 
     private function finished(e:Event):void
     {
-        dispatchEvent(new Event('finish'));
+        //dispatchEvent(new Event('finish'));
+        dispatchFinish();
+    }
+
+    public function dispatchFinish():void
+    {
+        _main.dispachFinish();
     }
 
     /////////////// Pause / Play
@@ -234,8 +206,13 @@ public class SoundPlayer extends Sprite
 		if(_channel)
 				_channel.soundTransform = _transform;
 
-		main.ShowVolume(_volume/2);
+		showVolume(_volume/2);
 	}
+
+    public function showVolume(vol:Number):void
+    {
+        _main.ShowVolume(vol);
+    }
 
 	public function get volume():int
 	{
@@ -324,7 +301,15 @@ public class SoundPlayer extends Sprite
     {
         _loaded = loaded;
         if(loaded)
-            dispatchEvent(new Event('loaded'))
+        {
+            //dispatchEvent(new Event('loaded'))
+            dispatchLoaded();
+        }
+    }
+
+    public function dispatchLoaded():void
+    {
+        _main.dispachLoaded(new Event('loaded'));
     }
 
     public function get playing():Boolean
@@ -335,6 +320,10 @@ public class SoundPlayer extends Sprite
     public function set playing(value:Boolean):void
     {
         _playing = value;
+    }
+
+    public function addEventListener(event:String, func:Function):void
+    {
     }
 }
 

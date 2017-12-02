@@ -69,7 +69,7 @@ public class Animation
         
         _currentTopic = -1;
         _startTime = 0;
-        _stopTime = main.sound.total;
+        _stopTime = main.myMedia.total;
         _duration = _stopTime - _startTime;
         main.activeTopic(0);
 
@@ -79,7 +79,7 @@ public class Animation
         _master = new Array();
 
         var i:int;
-        _len =  int(main.sound.total/STEP);
+        _len =  int(main.myMedia.total/STEP);
 
         //
         _len++;
@@ -115,7 +115,7 @@ public class Animation
 
     private function checkTimes(event:Event):void
     {
-        var time:Number = main.sound.time;
+        var time:Number = main.myMedia.time;
         if(_time == time)
             return;
 
@@ -170,7 +170,7 @@ public class Animation
     ///////////////////////////////// Old check Time
     private function checkTime(e:Event = null):void
     {
-        var time:Number = main.sound.time;
+        var time:Number = main.myMedia.time;
         if(_time == time)
             return;
 
@@ -220,7 +220,7 @@ public class Animation
         if(_topics.length > i+1)
             _stopTime = _topics[i+1].time;
         else
-            _stopTime = main.sound.total;
+            _stopTime = main.myMedia.total;
 
         _duration = _stopTime - _startTime;
     }
