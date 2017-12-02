@@ -11,9 +11,8 @@ import flash.net.URLRequest;
 import media.MediaPlayer;
 
 
-public class SoundPlayer implements MediaPlayer
+public class SoundPlayer extends Sprite  implements MediaPlayer
 {
-    private var _sprite:Sprite;
     private var _sound:Sound;
     private var _position:Number;
     private const buffer:int = 10;
@@ -28,8 +27,6 @@ public class SoundPlayer implements MediaPlayer
     public function SoundPlayer(Main:ContentViewer)
     {
         setMain(Main);
-
-        _sprite = new Sprite();
 
         // constructor code
         _transform= new SoundTransform();
@@ -54,7 +51,7 @@ public class SoundPlayer implements MediaPlayer
         _sound = new Sound();
         //_sound.load(new URLRequest(file), new SoundLoaderContext(buffer * 1000));
         _sound.load(new URLRequest(file));
-        _sprite.addEventListener(Event.ENTER_FRAME, ef);
+        addEventListener(Event.ENTER_FRAME, ef);
     }
 
     public function set progressText(txt:String):void
@@ -73,7 +70,7 @@ public class SoundPlayer implements MediaPlayer
         if(p == 1)
         {
             progressText = 'Loaded';
-            _sprite.removeEventListener(Event.ENTER_FRAME, ef);
+            removeEventListener(Event.ENTER_FRAME, ef);
             loaded = true;
             startAnimation();
             resume();
@@ -93,13 +90,7 @@ public class SoundPlayer implements MediaPlayer
 
     private function finished(e:Event):void
     {
-        //dispatchEvent(new Event('finish'));
-        dispatchFinish();
-    }
-
-    public function dispatchFinish():void
-    {
-        _main.dispachFinish();
+        dispatchEvent(new Event('finish'));
     }
 
     /////////////// Pause / Play
@@ -301,15 +292,7 @@ public class SoundPlayer implements MediaPlayer
     {
         _loaded = loaded;
         if(loaded)
-        {
-            //dispatchEvent(new Event('loaded'))
-            dispatchLoaded();
-        }
-    }
-
-    public function dispatchLoaded():void
-    {
-        _main.dispachLoaded(new Event('loaded'));
+            dispatchEvent(new Event('loaded'))
     }
 
     public function get playing():Boolean
@@ -322,9 +305,6 @@ public class SoundPlayer implements MediaPlayer
         _playing = value;
     }
 
-    public function addEventListener(event:String, func:Function):void
-    {
-    }
 }
 
 }

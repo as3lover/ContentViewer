@@ -77,8 +77,8 @@ public class ContentViewer extends Sprite
         addChild(board);
 
         myMedia = new SoundPlayer(this);
-        //media.addEventListener('loaded', dispachLoaded);
-        //media.addEventListener('finish', dispachFinish);
+        (myMedia as Sprite).addEventListener('loaded', dispachLoaded);
+        (myMedia as Sprite).addEventListener('finish', dispachFinish);
 
         progress = new Progress(this);
         addChild(progress);

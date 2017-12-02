@@ -34,10 +34,6 @@ public interface MediaPlayer
     function set playing(value:Boolean):void
     function get playing():Boolean
 
-    function dispatchLoaded():void
-    function dispatchFinish():void
-
-
     function setMain(Main:ContentViewer):void
     function set progressText(txt:String):void
     function set progressPercent(p:Number):void
