@@ -11,7 +11,7 @@ import flash.utils.setTimeout;
 
 import src2.Utils;
 
-import videoPlayerPackage.VideoObject;
+import media.VideoObject;
 
 public class VideoPlayerMulti extends Sprite implements MediaPlayer
 {
@@ -22,8 +22,6 @@ public class VideoPlayerMulti extends Sprite implements MediaPlayer
 
     private var list:Vector.<VideoObject>;
     private var buffers:Vector.<Sprite>;
-    private var step:int;
-    private var last:int;
     private var len:uint;
 
     private var buffer:Sprite;
@@ -40,6 +38,7 @@ public class VideoPlayerMulti extends Sprite implements MediaPlayer
     private var txt:TextField;
     private var _playing:Boolean;
     private var _loaded:Boolean;
+    private var allVideosLen:Array;
 
 
 
@@ -59,31 +58,29 @@ public class VideoPlayerMulti extends Sprite implements MediaPlayer
         progressText = 'Loading Video';
         progressPercent = 0;
         loaded = false;
-
-
-        var path = new <String>[];
-        path.push('http://hw16.asset.aparat.com/aparat-video/e3e69632c6935b2fb29e88610051ebd17708949-144p__83594.mp4');
-        path.push('http://hw2.asset.aparat.com/aparat-video/5472bdafdce2a3843b5bd95a435125e07713270-144p__78570.mp4');
-        path.push('http://hw3.asset.aparat.com/aparat-video/d4d1600fe1ae3c0e872649ce9fc9fe007706280-144p__55335.mp4');
-        path.push('http://hw4.asset.aparat.com/aparat-video/c9e5f5201a4c2c2afef8e3d7d5c0b9f37713839-144p__69039.mp4');
-        path.push('http://hw14.asset.aparat.com/aparat-video/d9900b665e1a8013a29e6501ea0890b97703297-144p__63358.mp4');
-        path.push('http://hw15.asset.aparat.com/aparat-video/64551a51e594961ae5e8bfa0a49d15087694009-144p__43097.mp4');
-        path.push('http://hw7.asset.aparat.com/aparat-video/97e89d31fe8cdd94de212a96c6c6d7067696208-144p__68489.mp4');
-        path.push('http://hw16.asset.aparat.com/aparat-video/211c1e7b60dabbe2811ef60a3292d93b7696973-144p__54884.mp4');
-
-        start(path, 81, 80);
     }
 
-    private function start(path:Vector.<String>, step:int, last:int):void
+    public function start(path:Vector.<String>, allVideosLen:Array):void
     {
-        trace("start", step, last);
+        trace("start");
+
+        stop();
+        progressText = 'Loading Video';
+        progressPercent = 0;
+        loaded = false;
+
+
         for (var x=0; x<path.length; x++)
             trace(path[x])
 
         this.len = path.length;
-        this.step = step;
-        this.last = last;
-        this.duration = (step * (len-1)) + last;
+        this.allVideosLen = allVideosLen;
+
+        var d:Number = 0;
+        for(var du:int=0; du<allVideosLen.length; du++)
+            d += allVideosLen[du];
+        this.duration = d;
+
         this.list = new <VideoObject>[];
         this._vidNum = -1;
         this.video = null;
@@ -92,22 +89,23 @@ public class VideoPlayerMulti extends Sprite implements MediaPlayer
         list = new <VideoObject>[];
         buffers = new <Sprite>[];
 
+        var sum:int = 0;
+
         for(var i:int=0; i<len; i++)
         {
             list.push(new VideoObject(path[i]));
 
             buffer = new Sprite();
 
-            if(i != len-1)
-                Utils.drawRect(buffer, 0, 0, (step/duration)*W, 5, 0xff9900, .5);
-            else
-                Utils.drawRect(buffer, 0, 0, (last/duration)*W, 5, 0xff9900, .5);
+            Utils.drawRect(buffer, 0, 0, (allVideosLen[i]/duration)*W, 5, 0xff9900, .5);
 
-            buffer.x = ((i * step)/duration)*W;
+            buffer.x = (sum/duration)*W;
             buffer.y = H - buffer.height;
             buffer.scaleX = 0;
             addChild(buffer);
             buffers.push(buffer);
+
+            sum += allVideosLen[i];
         }
 
         //play(0);
@@ -131,14 +129,24 @@ public class VideoPlayerMulti extends Sprite implements MediaPlayer
 
     public function pause():void
     {
+        trace('video pause')
         if(video)
         {
+            trace('has video')
             if (playing)
             {
+                trace('playing')
                 video.pause();
                 playing = false;
             }
+            else
+            {
+                trace('no playing')
+                video.stop();
+            }
         }
+        else
+            trace('no video')
     }
 
     public function resume():void
@@ -157,17 +165,38 @@ public class VideoPlayerMulti extends Sprite implements MediaPlayer
         else if(time<0)
             time = 0;
 
-        vidNum = Math.floor(time/step);
+        vidNum = timeToVidNum(time);
 
         var percent:Number;
 
-        if(vidNum != len-1)
-            percent = (time - zeroTime)/step;
-        else
-            percent = (time - zeroTime)/last;
+        percent = (time - zeroTime)/currentDuration;
 
         if(video)
             video.play(percent);
+    }
+
+    private function get currentDuration():Number
+    {
+        return allVideosLen[vidNum];
+    }
+
+    private function timeToVidNum(time:Number):int
+    {
+        //return Math.floor(time/step);
+
+        var sum:Number = 0;
+        for(var i:int=0; i<allVideosLen.length; i++)
+        {
+            sum += allVideosLen[i];
+            if(time < sum)
+            {
+                return i;
+            }
+        }
+
+        i--;
+        return i;
+
     }
 
     public function stop():void
@@ -180,6 +209,7 @@ public class VideoPlayerMulti extends Sprite implements MediaPlayer
 
     public function reset():void
     {
+        stop();
     }
 
     public function set percent(per:Number):void
@@ -218,6 +248,7 @@ public class VideoPlayerMulti extends Sprite implements MediaPlayer
         else if (value >= len)
             value = 0;
 
+        trace('Vid Num:', value + 1);
 
         removeEventListener(Event.ENTER_FRAME, ef);
 
@@ -231,7 +262,11 @@ public class VideoPlayerMulti extends Sprite implements MediaPlayer
         video = list[vidNum];
         addChildAt(video, 0);
 
-        zeroTime = vidNum * step;
+        //zeroTime = vidNum * step;
+        zeroTime = 0;
+        for(var i:int=0; i<vidNum; i++)
+            zeroTime += allVideosLen[i];
+
         zeroPercent = zeroTime/duration;
         setVideoLoading(vidNum);
 
@@ -355,8 +390,10 @@ public class VideoPlayerMulti extends Sprite implements MediaPlayer
 
     private function onVideoLoaded(event:Event):void
     {
-        if(video == loadingVideo)
+        trace('onVideoLoaded');
+        if(vidNum == loadingIndex)
         {
+            trace('video == loadingVideo')
             progressPercent = 1;
 
             loaded = true;

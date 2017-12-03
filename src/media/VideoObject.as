@@ -1,7 +1,7 @@
 /**
  * Created by mkh on 2017/07/28.
  */
-package videoPlayerPackage
+package media
 {
 import com.greensock.TweenLite;
 
@@ -21,8 +21,8 @@ import src2.Utils;
 
 public class VideoObject extends Sprite
 {
-    private const W:int = 800;
-    private const H:int = 450;
+    private const W:int = ContentViewer.W;
+    private const H:int = ContentViewer.H;
 
     private var loading:Sprite;
     private var bar:Sprite;
@@ -74,7 +74,7 @@ public class VideoObject extends Sprite
         //return;
         this.path = path;
 
-        video = new Video(800,450);
+        video = new Video(W,H);
         video.smoothing = true;
         addChildAt(video,0);
 
@@ -186,6 +186,8 @@ public class VideoObject extends Sprite
 
 
         status = 'connecting...';
+
+        trace('LOAD Video', file)
 
         showLoading();
         bar.scaleX = 0;
@@ -636,8 +638,8 @@ public class VideoObject extends Sprite
 
     public function stop():void
     {
-        pause();
         setTime(0);
+        pause();
     }
 
     public function toggle():void

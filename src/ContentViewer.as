@@ -8,10 +8,14 @@ import Viewer.Board;
 import Viewer.FileLoader;
 import Viewer.Keyboard;
 
+import flash.display.Stage;
+
 import flash.external.ExternalInterface;
+import flash.text.TextField;
 import flash.utils.clearTimeout;
 
 import media.MediaPlayer;
+import media.VideoPlayerMulti;
 
 import src2.Utils;
 
@@ -35,7 +39,6 @@ public class ContentViewer extends Sprite
     public var folder:String;
     public var loader:FileLoader;
     public var animation:Animation;
-    public var myMedia:MediaPlayer;
     //public var timeLine:TimeLine;
     public var progress:Progress;
     public var projectPath:String;
@@ -59,6 +62,14 @@ public class ContentViewer extends Sprite
     public static var address:String;
     private var timeOut:uint;
 
+    public var isVideo:Boolean;
+    private var sound:SoundPlayer;
+    private var video:VideoPlayerMulti;
+    private var loadedText:String;
+    private const W2:Number = W/2;
+    private const H2:Number = H/2;
+    private var _stage:Stage;
+
     public function ContentViewer()
     {
         trace('NEW: ContentViewer');
@@ -67,6 +78,7 @@ public class ContentViewer extends Sprite
 
     private function init(event:Event):void
     {
+        _stage = stage;
         removeEventListener(Event.ADDED_TO_STAGE, init);
         setTimeout(INIT,1);
     }
@@ -76,10 +88,17 @@ public class ContentViewer extends Sprite
         board = new Board(this);
         addChild(board);
 
-        myMedia = new SoundPlayer(this);
-        (myMedia as Sprite).addEventListener('loaded', dispachLoaded);
-        (myMedia as Sprite).addEventListener('finish', dispachFinish);
-        addChild(myMedia as Sprite);
+        sound = new SoundPlayer(this);
+        sound.addEventListener('loaded', dispachLoaded);
+        sound.addEventListener('finish', dispachFinish);
+        sound.visible = false;
+        addChild(sound);
+
+        video = new VideoPlayerMulti(this);
+        video.addEventListener('loaded', dispachLoaded);
+        video.addEventListener('finish', dispachFinish);
+        video.visible = false;
+        addChild(video);
 
         progress = new Progress(this);
         addChild(progress);
@@ -87,9 +106,21 @@ public class ContentViewer extends Sprite
         //timeLine = new TimeLine(this, 0, 337+5, 600, 13);
         //addChild(timeLine);
 
+
         try
         {
             address = ExternalInterface.call("window.location.href.toString");
+            if (address == null)
+            {
+                try
+                {
+                    address = root.loaderInfo.url
+                }
+                catch (e)
+                {
+                    address = 'rian-contentviewer-1'
+                }
+            }
         }
         catch (e)
         {
@@ -103,11 +134,29 @@ public class ContentViewer extends Sprite
             }
         }
 
+        /*
+        if (address == null)
+            address = 'file:///D|/Projects/IdeaProjects/Template/Main%202/movie.swf';
+*/
+        /*
+        //// temp
+        trace('address:', address);
+        address = address.replace('movie.swf', '');
+        var t:TextField = new TextField();
+        addEventListener(Event.ENTER_FRAME, gg);
+        function gg(d)
+        {
+            addChild(t);
+            t.text = address;
+        }
+        //////////////////
+*/
+
         animation = new Animation(this);
 
         loader = new FileLoader(this);
 
-        keyboard = new Keyboard(stage, this, myMedia);
+        keyboard = new Keyboard(_stage, this, myMedia);
 
         _volume = new Volume();
         addChild(_volume);
@@ -161,7 +210,7 @@ public class ContentViewer extends Sprite
 
     private function reset():void
     {
-        //trace('reset');
+        trace('Content reset');
         board.reset();
         myMedia.reset();
         loader.stop();
@@ -177,15 +226,218 @@ public class ContentViewer extends Sprite
     ///////////////////////////////
     public function load(dir:String, file:String, updateFunc:Function = null, topicUpdater:Function = null):void
     {
+        ///////////////
         clearTimeout(timeOut);
 
         actived = true;
         projectPath = dir + file + '.txt';
         reset();
-        this.folder = dir + file + '/';
-        loader.load(projectPath);
-        _topicFunc = topicUpdater;
-        _updateFunc = updateFunc;
+        this.folder = dir + file + '\\';
+        // loader.load(projectPath);
+        //_topicFunc = topicUpdater;
+        //_updateFunc = updateFunc;
+        /////////////////
+
+
+        // for video --------------------------------
+        loader.loadText(folder + "video.txt", after);
+        //-------------------------------------------
+
+        function next():void
+        {
+            loader.load(projectPath);
+            _topicFunc = topicUpdater;
+            _updateFunc = updateFunc;
+        }
+
+
+        function after(txt:String):void
+        {
+            if (txt == null)
+            {
+                //trace("sound");
+                isVideo = false;
+                next();
+            }
+            else
+            {
+                try
+                {
+                    loadedText = txt;
+                    isVideo = true;
+                    next();
+
+                }
+                catch (e:*)
+                {
+                    next();
+                }
+            }
+        }
+    }
+
+    public function loadVideos():void
+    {
+        var list:Array = loadedText.split(/\n/);
+
+        var allVideosLen:Array = [];
+
+        var numOfVids:int = int(list[0]);
+        var ext:String = "." + String(list[1]).substr(0,3);
+
+        if (list.length >= numOfVids + 2)
+        {
+            for(var j:int=0; j<numOfVids; j++)
+            {
+                allVideosLen.push(Number(list[j+2]))
+            }
+        }
+        else
+        {
+            var vidLen:Number = Number(list[2]);
+            var lastVidLen:Number = Number(list[3]);
+
+            for(var j:int=0; j<numOfVids-1; j++)
+            {
+                allVideosLen.push(vidLen)
+            }
+
+            allVideosLen.push(lastVidLen)
+        }
+
+
+        //ext = ext.replace('\n','');
+        //ext = ext.substr(0,4);
+
+        var path:Vector.<String> = new <String>[];
+
+        for (var i:int = 0; i < numOfVids; i++)
+        {
+            var str:String = folder + String(i + 1) + ext;
+            trace(str, allVideosLen[i]);
+
+            path.push(str);
+        }
+
+        isVideo = true;
+
+        /*
+         path = new <String>[];
+
+         path.push('http://hw16.asset.aparat.com/aparat-video/e3e69632c6935b2fb29e88610051ebd17708949-144p__83594.mp4');
+         path.push('http://hw2.asset.aparat.com/aparat-video/5472bdafdce2a3843b5bd95a435125e07713270-144p__78570.mp4');
+         path.push('http://hw3.asset.aparat.com/aparat-video/d4d1600fe1ae3c0e872649ce9fc9fe007706280-144p__55335.mp4');
+         path.push('http://hw4.asset.aparat.com/aparat-video/c9e5f5201a4c2c2afef8e3d7d5c0b9f37713839-144p__69039.mp4');
+         path.push('http://hw14.asset.aparat.com/aparat-video/d9900b665e1a8013a29e6501ea0890b97703297-144p__63358.mp4');
+         path.push('http://hw15.asset.aparat.com/aparat-video/64551a51e594961ae5e8bfa0a49d15087694009-144p__43097.mp4');
+         path.push('http://hw7.asset.aparat.com/aparat-video/97e89d31fe8cdd94de212a96c6c6d7067696208-144p__68489.mp4');
+         path.push('http://hw16.asset.aparat.com/aparat-video/211c1e7b60dabbe2811ef60a3292d93b7696973-144p__54884.mp4');
+
+         allVideosLen = [81,81,81,81,81,81,81,81]
+         */
+
+        video.start(path, allVideosLen);
+        video.width = W;
+        video.scaleY = video.scaleX;
+
+        manage();
+    }
+
+    private function manage():void
+    {
+        //trace('manage');
+        var self = this;
+
+        var bt:Sprite = new Sprite();
+        bt.graphics.beginFill(0xffffff);
+        bt.graphics.lineStyle(0);
+        bt.graphics.drawCircle(0,0,10);
+        bt.x = W2;
+        bt.y = H2;
+        bt.buttonMode = true;
+        self.addChild(bt);
+
+        bt.addEventListener(MouseEvent.MOUSE_OVER, over);
+        function over(e:MouseEvent):void
+        {
+            bt.alpha = 1;
+        }
+        bt.addEventListener(MouseEvent.MOUSE_OUT, out);
+        function out(e:MouseEvent):void
+        {
+            bt.alpha = 0.5;
+        }
+
+        var boardPos:Sprite = new Sprite();
+        Utils.drawRect(boardPos, 0, 0, W, H);
+        self.addChildAt(boardPos,0);
+
+        var maskk:Sprite = new Sprite();
+        Utils.drawRect(maskk, 0, 0, W, H);
+        //self.addChildAt(maskk, 1);
+
+        var pos:int;
+        var posOld:int;
+
+        bt.addEventListener(MouseEvent.MOUSE_DOWN, onDown);
+
+        pos = W2;
+        move();
+
+        function onDown(event:MouseEvent):void
+        {
+            //trace('onDown');
+            _stage.addEventListener(Event.ENTER_FRAME, onMove);
+            _stage.addEventListener(MouseEvent.MOUSE_UP, onUP)
+        }
+        function onUP(event:MouseEvent):void
+        {
+            //trace('onUp');
+            _stage.removeEventListener(Event.ENTER_FRAME, onMove);
+        }
+
+        function onMove(event:Event):void
+        {
+            pos = mouseX;
+
+            if(pos<0)
+                pos = 0;
+            else if(pos>W)
+                pos = W;
+
+            move()
+
+        }
+
+        function move()
+        {
+            if (pos == posOld)
+                return;
+
+            import com.greensock.layout.*;
+
+            posOld = pos;
+
+            bt.x = pos;
+
+            var area:AutoFitArea = new AutoFitArea(self, 0, 0, pos, H);
+            area.attach(boardPos);
+
+            area = new AutoFitArea(self, pos, 0, W-pos, H);
+            area.attach(myMedia as Sprite);
+
+            maskk.x = boardPos.x;
+            maskk.y = boardPos.y;
+            maskk.scaleX = boardPos.scaleX;
+            maskk.scaleY = boardPos.scaleY;
+
+            board.x = boardPos.x;
+            board.y = boardPos.y;
+            board.scaleX = boardPos.scaleX;
+            board.scaleY = boardPos.scaleY;
+
+            //board.mask = maskk;
+        }
     }
 
     public function get duration():Number
@@ -259,8 +511,7 @@ public class ContentViewer extends Sprite
 
     public function stop():void
     {
-        //trace('stop');
-
+        trace('VIEWER stop');
         myMedia.stop();
     }
 
@@ -295,15 +546,18 @@ public class ContentViewer extends Sprite
     public function hide():void
     {
         actived = false;
-        //trace('pause');
+        trace('Content hide');
 
         if(loaded)
         {
-            //trace('sound.pause()')
+            trace(' myMedia.pause(')
             myMedia.pause();
         }
         else
+        {
+            trace('reset');
             reset();
+        }
     }
 
     public function resume():void
@@ -314,6 +568,7 @@ public class ContentViewer extends Sprite
 
     public function pause():void
     {
+        trace('Content Pause');
         myMedia.pause();
     }
 
@@ -375,5 +630,24 @@ public class ContentViewer extends Sprite
         if(_updateFunc)
             _updateFunc();
     }
+
+
+    public function get myMedia():MediaPlayer
+    {
+        if (isVideo)
+        {
+            video.visible = true;
+            sound.visible = false;
+            return video;
+        }
+        else
+        {
+            sound.visible = true;
+            video.visible = false;
+            return sound
+        }
+    }
+
+
 }
 }

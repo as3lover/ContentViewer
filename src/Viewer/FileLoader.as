@@ -40,9 +40,14 @@ public class FileLoader
     {
         var loader:URLLoader = new URLLoader();
         loader.addEventListener(Event.COMPLETE, onLoaded);
+        loader.addEventListener(IOErrorEvent.IO_ERROR, onError);
         function onLoaded(e:Event):void
         {
             after(e.target.data);
+        }
+        function onError(event:IOErrorEvent):void
+        {
+            after(null)
         }
 
         loader.load(new URLRequest(path));
@@ -204,7 +209,9 @@ public class FileLoader
             if(_stop)
                 return;
 
-            if(sound)
+            if (main.isVideo)
+                main.loadVideos();
+            else if(sound)
                 main.myMedia.load(main.folder + sound);
         }
 

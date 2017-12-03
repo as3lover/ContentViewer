@@ -32,7 +32,7 @@ public class Animation
     private var _stopTime:Number;
     private var _duration:Number;
 
-
+    ///////////////////
     public function Animation(Main:ContentViewer)
     {
         main = Main;
@@ -44,29 +44,14 @@ public class Animation
         _list = list;
     }
 
-    ///////////////////////////////// reset Times
-    public function resetTimes():void
-    {
-        clearTimeout(_timeout);
-        main.board.removeEventListener(Event.ENTER_FRAME, checkTimes);
-        _currentIndex = -1;
-        _clone = [];
-        main.board.addEventListener(Event.ENTER_FRAME, checkTime);
-        _timeout = setTimeout(sett,700);
-        function sett():void
-        {
-            main.board.addEventListener(Event.ENTER_FRAME, checkTimes);
-            main.board.removeEventListener(Event.ENTER_FRAME, checkTime);
-        }
-    }
-
     ///////////////////////////////// Start
     public function start():void
     {
+        trace('start animation');
         Utils.sortArrayByField(_list,'startTime');
 
         _currentIndex = -1;
-        
+
         _currentTopic = -1;
         _startTime = 0;
         _stopTime = main.myMedia.total;
@@ -79,7 +64,14 @@ public class Animation
         _master = new Array();
 
         var i:int;
+
         _len =  int(main.myMedia.total/STEP);
+
+        ////////////////////////////
+        var maxStartTime = Item(_list[_list.length - 1]).startTime;
+        var maxLen = int(maxStartTime/STEP);
+        if(maxLen > _len) _len = maxLen;
+        ////////////////////////////
 
         //
         _len++;
@@ -104,45 +96,121 @@ public class Animation
             catch (e)
             {
                 trace(e);
-                trace(_master.length, _list.length, i2, i);
+                trace('_master:',_master);
+                trace('_master.length:',_master.length);
+                trace('i2:',i2);
+                trace('_master[i2]:',_master[i2]);
+                trace('_list:',_list);
+                trace('_list.length:',_list.length);
+                trace('i:',i);
+                trace('_list[i]:',_list[i]);
+                trace('>>>>>');
+                //trace(_master.length, _list.length, i2, i);
             }
         }
 
         main.board.addEventListener(Event.ENTER_FRAME, checkTimes);
     }
+    ////////////////////
+
+
+
+
+
+    ///////////////////////////////// reset Times
+    public function resetTimes():void
+    {
+        clearTimeout(_timeout);
+        main.board.removeEventListener(Event.ENTER_FRAME, checkTimes);
+        _currentIndex = -1;
+        _clone = [];
+        main.board.addEventListener(Event.ENTER_FRAME, checkTime);
+        _timeout = setTimeout(sett,700);
+        function sett():void
+        {
+            main.board.addEventListener(Event.ENTER_FRAME, checkTimes);
+            main.board.removeEventListener(Event.ENTER_FRAME, checkTime);
+        }
+    }
+
+
 
 
 
     private function checkTimes(event:Event):void
     {
+        //trace('checkTimes 1');
         var time:Number = main.myMedia.time;
         if(_time == time)
             return;
 
         _time = time;
 
+
+
         var i:int = int(_time/STEP);
+
+        if(i > _master.length - 1)
+                i = _master.length - 1;
+        else if (i<0)
+                i = 0;
+
+        //trace('checkTimes 2', i, _currentIndex);
+
 
         if(i != _currentIndex)
         {
             _currentIndex = i;
 
+            //trace('i:', i, '_master.length:', _master.length, '_master[i]:', _master[i], '_master:', typeof _master);
+
+            //if(_clone)
+                //trace('_clone.length:', _clone.length);
+
             _clone = Utils.copyArray(_master[i]);
 
+            //trace(_clone.length, '_clone:', _clone);
+
             if(i>0)
-                _clone = _clone.concat(_master[i-1])
+                _clone = _clone.concat(_master[i-1]);
+
+            //trace(_clone.length, '_clone:', _clone);
 
         }
 
+        //trace('checkTimes 3');
+
+
         var index:Array=[];
-        _len = _clone.length;
+        //trace('checkTimes 3.1');
+        //trace(_len, _clone, "Hi!")
+
+        if(_clone)
+            _len = _clone.length;
+        else
+            _len = 0;
+
+
+        //trace('checkTimes 3.2');
+
         for(i = 0 ; i<_len; i++)
         {
+            //trace('checkTimes 3.2.1');
+
+            var item = Item(_clone[i]);
+            //trace('checkTimes 3.3', 'clone:', _clone, 'item:',  item, 'clone[i]:', _clone[i], 'i:', i, 'len:', _len, 'length:',  _clone.length);
+            //trace('checkTimes 3.4', item.startTime);
+            //trace('checkTimes 3.5', _time);
+
+
             if(Item(_clone[i]).startTime <= _time)
                 index.push(i);
             else
                 break;
         }
+
+        //trace('checkTimes 4');
+
 
         _len = index.length;
         for(i = _len-1 ; i>-1; i--)
@@ -151,7 +219,13 @@ public class Animation
             _clone.splice(i,1)
         }
 
+        //trace('checkTimes 5');
+
+
         setTimes();
+
+        //trace('checkTimes 6');
+
     }
 
     ///////////////////////////////// set Times
