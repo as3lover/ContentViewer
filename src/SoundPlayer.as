@@ -56,7 +56,7 @@ public class SoundPlayer extends Sprite  implements MediaPlayer
 
     public function set progressText(txt:String):void
     {
-        _main.progress.text =txt;
+        _main.progress.text = txt;
     }
 
     private function ef(event:Event):void

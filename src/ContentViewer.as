@@ -79,6 +79,7 @@ public class ContentViewer extends Sprite
         myMedia = new SoundPlayer(this);
         (myMedia as Sprite).addEventListener('loaded', dispachLoaded);
         (myMedia as Sprite).addEventListener('finish', dispachFinish);
+        addChild(myMedia as Sprite);
 
         progress = new Progress(this);
         addChild(progress);
