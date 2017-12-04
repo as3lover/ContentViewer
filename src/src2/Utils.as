@@ -71,16 +71,18 @@ public class Utils
         }
     }
 
-    public static function drawRect(object:Object, x:int, y:int, width:int, height:int, color:int = 0x333333, lineWidth:Number = 0, lineColor:uint = 0x0):void
+    public static function drawRect(obj:Object, x:int, y:int, width:int, height:int, color:int = 0x333333, lineWidth:Number = 0, lineColor:uint = 0x0, backAlpha:Number = 1, lineAlpha:Number = 1):void
     {
+        //var obj:Sprite = obj as Sprite;
+
         if(lineWidth)
-            object.graphics.lineStyle(lineWidth, lineColor);
+            obj.graphics.lineStyle(lineWidth, lineColor, lineAlpha);
         if(color == -1)
-            object.graphics.endFill();
+            obj.graphics.endFill();
         else
-            object.graphics.beginFill(color);
-        object.graphics.drawRect(x, y, width, height);
-        object.graphics.endFill();
+            obj.graphics.beginFill(color, backAlpha);
+        obj.graphics.drawRect(x, y, width, height);
+        obj.graphics.endFill();
     }
 
     public static function removeItemAtIndex(list:Array, index:int):void

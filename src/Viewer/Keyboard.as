@@ -16,13 +16,11 @@ public class Keyboard
 {
     private var _stage:Stage;
     private var _main:ContentViewer;
-    private var _player:MediaPlayer;
 
-    public function Keyboard(stage:Stage, main:ContentViewer, player:MediaPlayer)
+    public function Keyboard(stage:Stage, main:ContentViewer)
     {
         _stage = stage;
         _main = main;
-        _player = player;
         stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
         stage.addEventListener(MouseEvent.MOUSE_WHEEL, onWheel);
     }
@@ -33,9 +31,9 @@ public class Keyboard
             return;
 
         if(e.delta < 0)
-            _player.volumeDown();
+            player.volumeDown();
         else
-            _player.volumeUp();
+            player.volumeUp();
     }
 
 
@@ -55,11 +53,11 @@ public class Keyboard
                 break;
 
             case 38://Up
-                _player.volumeUp();
+                player.volumeUp();
                 break;
 
             case 40://Down
-                _player.volumeDown();
+                player.volumeDown();
                 break;
 
             case 32://Space
@@ -100,6 +98,11 @@ public class Keyboard
 
         //trace(i);
         _main.time = _main.myMedia.time + i;
+    }
+
+    public function get player():MediaPlayer
+    {
+        return _main.myMedia;
     }
 }
 }

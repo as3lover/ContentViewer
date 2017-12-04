@@ -156,7 +156,7 @@ public class ContentViewer extends Sprite
 
         loader = new FileLoader(this);
 
-        keyboard = new Keyboard(_stage, this, myMedia);
+        keyboard = new Keyboard(_stage, this);
 
         _volume = new Volume();
         addChild(_volume);
@@ -336,6 +336,21 @@ public class ContentViewer extends Sprite
          allVideosLen = [81,81,81,81,81,81,81,81]
          */
 
+        /*
+        ///////////////////temp//////////////////
+        path = new <String>[];
+        path.push('https://hw18.asset.aparat.com/aparat-video/827b793a146ddceda64bd3f94f7bbadb8857639-1080p__37079.mp4');
+        path.push('https://hw20.asset.filimo.com/aparat-video/12c2e09a429f831b92758863ec26ed7f8848069-1080p__58692.mp4');
+        path.push('https://hw19.asset.aparat.com/aparat-video/32bc77a3b6be03a9a00d167b1353fb6f8874686-480p__45623.mp4');
+        //path.push('https://hw18.asset.aparat.com/aparat-video/f2dc852b509a5e6db387fc5c4f72c9728818458-720p__23684.mp4');
+        //path.push('https://hw20.asset.aparat.com/aparat-video/ace0cf1e6a8ad9381dd95213f26b33338873665-720p__80807.mp4');
+        //path.push('https://hw17.asset.aparat.com/aparat-video/f456b3a90f952adee45e0a3e49e587298875176-480p__53114.mp4');
+        //path.push('https://hw18.asset.aparat.com/aparat-video/c8100fb123cd8d774f099460407827dd8878801-480p__38587.mp4');
+        allVideosLen = [1088,2890,1416];
+        //allVideosLen = [1088,2890,1416,480,259,59,580];
+        /////////////////////////////////////////
+        */
+
         video.start(path, allVideosLen);
         video.width = W;
         video.scaleY = video.scaleX;
@@ -348,24 +363,56 @@ public class ContentViewer extends Sprite
         //trace('manage');
         var self = this;
 
+        var back:Sprite = new Sprite();
+        Utils.drawRect(back, 0, 0, W, H, 0xffffff, 1, 0xffffff, 0.5);
+        addChildAt(back, 0);
+
         var bt:Sprite = new Sprite();
-        bt.graphics.beginFill(0xffffff);
-        bt.graphics.lineStyle(0);
-        bt.graphics.drawCircle(0,0,10);
+
+        //bt.graphics.beginFill(0xffffff);
+        //bt.graphics.lineStyle(0);
+        //bt.graphics.drawCircle(0,0,10);
+
+        var arrow:Bitmap = new assets.Arrow();
+        arrow.smoothing = true;
+        if(arrow.width > arrow.height)
+        {
+            arrow.width = 40;
+            arrow.scaleY = arrow.scaleX
+        }
+        else
+        {
+            arrow.height = 40;
+            arrow.scaleX = arrow.scaleY
+        }
+
+        arrow.x = - arrow.width/2;
+        arrow.y = - arrow.height/2;
+        bt.addChild(arrow);
+
         bt.x = W2;
         bt.y = H2;
         bt.buttonMode = true;
+        bt.alpha = 0.5;
         self.addChild(bt);
+
+        var moving:Boolean = false;
+        var outed:Boolean = true;
 
         bt.addEventListener(MouseEvent.MOUSE_OVER, over);
         function over(e:MouseEvent):void
         {
             bt.alpha = 1;
+            outed = false;
         }
+
         bt.addEventListener(MouseEvent.MOUSE_OUT, out);
         function out(e:MouseEvent):void
         {
-            bt.alpha = 0.5;
+            if(!moving)
+                bt.alpha = 0.5;
+
+            outed = true;
         }
 
         var boardPos:Sprite = new Sprite();
@@ -387,12 +434,16 @@ public class ContentViewer extends Sprite
         function onDown(event:MouseEvent):void
         {
             //trace('onDown');
+            moving = true;
             _stage.addEventListener(Event.ENTER_FRAME, onMove);
             _stage.addEventListener(MouseEvent.MOUSE_UP, onUP)
         }
         function onUP(event:MouseEvent):void
         {
             //trace('onUp');
+            moving = false;
+            if (outed)
+                    out(null)
             _stage.removeEventListener(Event.ENTER_FRAME, onMove);
         }
 
@@ -547,6 +598,9 @@ public class ContentViewer extends Sprite
     {
         actived = false;
         trace('Content hide');
+
+        if (myMedia is VideoPlayerMulti)
+            (myMedia as VideoPlayerMulti).stopLoad();
 
         if(loaded)
         {

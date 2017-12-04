@@ -3,7 +3,13 @@
  */
 package media
 {
+import Viewer.assets;
+
 import com.greensock.TweenLite;
+import com.greensock.TweenMax;
+import com.greensock.easing.Linear;
+
+import flash.display.Bitmap;
 
 import flash.display.Sprite;
 import flash.events.Event;
@@ -33,7 +39,7 @@ public class VideoObject extends Sprite
     private var _duration:Number;
     private var nc:NetConnection;
     private var videoSound:SoundTransform;
-    private var volume:int = 100;
+    private var _volume:int = 100;
     private var ns:NetStream;
 
     private var connected:Boolean;
@@ -64,6 +70,10 @@ public class VideoObject extends Sprite
 
     public function VideoObject(path:String = null)
     {
+        var back:Sprite = new Sprite();
+        Utils.drawRect(back, 0, 0, W, H, 0x333333, 1, 0, .5);
+        addChildAt(back, 0);
+
         //addChild(new flvParse());
         //return
 
@@ -76,7 +86,7 @@ public class VideoObject extends Sprite
 
         video = new Video(W,H);
         video.smoothing = true;
-        addChildAt(video,0);
+        addChild(video);
 
         nc = new NetConnection();
         nc.connect(null);
@@ -96,6 +106,7 @@ public class VideoObject extends Sprite
         ////////////////////////////
 
         loading = new Sprite();
+        /*
         var text:TextField = new TextField();
         text.text = 'Loading...';
         text.background = true;
@@ -106,6 +117,14 @@ public class VideoObject extends Sprite
         text.x = -text.width/2;
         text.y = -text.height/2;
         loading.addChild(text);
+        */
+        var bit:Bitmap = new assets.Loading();
+        bit.x = - bit.width/2;
+        bit.y = - bit.height/2;
+        bit.alpha = 0.5;
+        bit.smoothing = true;
+        loading.addChild(bit);
+
         loading.x = W/2;
         loading.y = H/2;
         addChild(loading);
@@ -198,6 +217,9 @@ public class VideoObject extends Sprite
             ns.pause();
         else
             ns.resume();
+
+        ns.soundTransform = videoSound;
+
     }
 
     private function starting():void
@@ -297,7 +319,7 @@ public class VideoObject extends Sprite
 
     private function myStatusHandler(e:NetStatusEvent):void
     {
-        setVolume = volume;
+        volume = _volume;
 
         switch(e.info.code)
         {
@@ -451,17 +473,24 @@ public class VideoObject extends Sprite
 
     private function hideLoading(time:Number = .3)
     {
-        ////trace('NO LOIADING');
-        TweenLite.to(loading, time, {alpha:0});
+        trace('NO LOIADING');
+        TweenLite.to(loading, time, {alpha:0, onComplete:a});
         status = 'hideLoading';
+
+        function a()
+        {
+            trace('removeTweens')
+            TweenMax.killTweensOf(loading);
+        }
     }
 
     private function showLoading(time:Number = .3)
     {
-        ////trace('SHOW LOIADING');
+        trace('SHOW LOIADING');
         if(!bufferFull && ! loadComplete)
         {
             TweenLite.to(loading, time, {alpha:1});
+            TweenMax.to(loading, 5, {rotation:loading.rotation+360, ease:Linear.easeNone, repeat:999});
             status = 'showLoading';
         }
     }
@@ -492,10 +521,11 @@ public class VideoObject extends Sprite
     }
 
 
-    private function set setVolume(n:int):void
+    public function set volume(val:int):void
     {
-        volume = n;
-        videoSound.volume = volume/100;
+        trace('change video volume', val/100);
+        _volume = val;
+        videoSound.volume = val/100;
         ns.soundTransform = videoSound;
     }
 
@@ -541,6 +571,8 @@ public class VideoObject extends Sprite
 
         paused = false;
         ns.resume();
+        ns.soundTransform = videoSound;
+
         //trace('resume',ns.time)
     }
     public function pause(event:MouseEvent=null):void
@@ -618,7 +650,10 @@ public class VideoObject extends Sprite
             status = 'Buffer Empty';
 
         if(value)
+        {
             hideLoading();
+            dispatchEvent(new Event('bufferFull'));
+        }
         else
             showLoading();
 

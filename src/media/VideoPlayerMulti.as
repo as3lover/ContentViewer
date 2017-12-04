@@ -39,6 +39,8 @@ public class VideoPlayerMulti extends Sprite implements MediaPlayer
     private var _playing:Boolean;
     private var _loaded:Boolean;
     private var allVideosLen:Array;
+    private var _volume:int = 100;
+    private var animationStarted:Boolean = false
 
 
 
@@ -47,8 +49,9 @@ public class VideoPlayerMulti extends Sprite implements MediaPlayer
         setMain(Main);
 
         bar = new Sprite();
-        Utils.drawRect(bar, 0, 0, W, 5, 0xff0000, .5);
-        bar.y = H - 10;
+        Utils.drawRect(bar, 0, 0, W, 2, 0xff0000, .5);
+        bar.y = H - bar.height * 2;
+        bar.alpha = 0.1;
         addChild(bar);
     }
 
@@ -97,8 +100,9 @@ public class VideoPlayerMulti extends Sprite implements MediaPlayer
 
             buffer = new Sprite();
 
-            Utils.drawRect(buffer, 0, 0, (allVideosLen[i]/duration)*W, 5, 0xff9900, .5);
+            Utils.drawRect(buffer, 0, 0, (allVideosLen[i]/duration)*W, 2, 0xff9900, .5);
 
+            buffer.alpha = 0.2;
             buffer.x = (sum/duration)*W;
             buffer.y = H - buffer.height;
             buffer.scaleX = 0;
@@ -329,6 +333,10 @@ public class VideoPlayerMulti extends Sprite implements MediaPlayer
             loadingVideo = list[index];
             loadingIndex = index;
             loadingVideo.addEventListener('loaded', onVideoLoaded);
+
+            if (loadingVideo == video)
+                loadingVideo.addEventListener('bufferFull', onBufferFull);
+
             loadingVideo.load();
 
             addEventListener(Event.ENTER_FRAME, ef);
@@ -354,14 +362,23 @@ public class VideoPlayerMulti extends Sprite implements MediaPlayer
 
     public function set video(vid:VideoObject):void
     {
+        trace('set video 1', _video, vid);
         if(_video == vid)
             return;
+        trace('set video 2');
 
         if(_video)
             _video.removeEventListener('finish', finished);
 
+        trace('set video 3');
+
         _video = vid;
-        _video.addEventListener('finish', finished);
+
+        trace('set video 4');
+
+
+        video.addEventListener('finish', finished);
+        video.volume = volume;
     }
 
     private function finished(e:Event):void
@@ -388,12 +405,27 @@ public class VideoPlayerMulti extends Sprite implements MediaPlayer
         _duration = value;
     }
 
+    private function onBufferFull(event:Event):void
+    {
+        trace('onBufferFull');
+        if(loadingVideo)
+            loadingVideo.removeEventListener('bufferFull', onBufferFull);
+
+        if(vidNum == loadingIndex)
+        {
+            progressPercent = 1;
+            loaded = true;
+            startAnimation();
+            resume();
+        }
+    }
+
     private function onVideoLoaded(event:Event):void
     {
         trace('onVideoLoaded');
         if(vidNum == loadingIndex)
         {
-            trace('video == loadingVideo')
+            trace('video == loadingVideo');
             progressPercent = 1;
 
             loaded = true;
@@ -412,11 +444,23 @@ public class VideoPlayerMulti extends Sprite implements MediaPlayer
 
     public function set volume(volume:int):void
     {
+        if(volume > 100)
+            volume = 100;
+        else if(volume < 0)
+            volume = 0;
+
+        trace("Volume" , _volume, ' > ', volume);
+
+        _volume = volume;
+        if(video)
+            video.volume = volume;
+
+        showVolume(volume/100)
     }
 
     public function get volume():int
     {
-        return 0;
+        return _volume;
     }
 
     public function volumeUp():void
@@ -482,12 +526,21 @@ public class VideoPlayerMulti extends Sprite implements MediaPlayer
 
     public function startAnimation():void
     {
-        _main.animation.start();
+        if(!animationStarted)
+            _main.animation.start();
+
+        animationStarted = true;
     }
 
     public function showVolume(vol:Number):void
     {
         _main.ShowVolume(vol);
+    }
+
+    public function stopLoad():void
+    {
+        if(loadingVideo)
+            loadingVideo.stopLoad();
     }
 }
 }
