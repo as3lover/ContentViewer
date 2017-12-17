@@ -40,18 +40,27 @@ public class VideoPlayerMulti extends Sprite implements MediaPlayer
     private var _loaded:Boolean;
     private var allVideosLen:Array;
     private var _volume:int = 100;
-    private var animationStarted:Boolean = false
-
-
+    private var animationStarted:Boolean = false;
+    private const DEBUG_MODE:Boolean = false;
+    private var _total:Number;
 
     public function VideoPlayerMulti(Main:ContentViewer)
     {
         setMain(Main);
 
+        var height:int = 2;
+        var alpha:Number = 0.1;
+
+        if(DEBUG_MODE)
+        {
+            height = 20;
+            alpha = 0.5;
+        }
+
         bar = new Sprite();
-        Utils.drawRect(bar, 0, 0, W, 2, 0xff0000, .5);
+        Utils.drawRect(bar, 0, 0, W, height, 0xff0000, .5);
         bar.y = H - bar.height * 2;
-        bar.alpha = 0.1;
+        bar.alpha = alpha;
         addChild(bar);
     }
 
@@ -100,9 +109,18 @@ public class VideoPlayerMulti extends Sprite implements MediaPlayer
 
             buffer = new Sprite();
 
-            Utils.drawRect(buffer, 0, 0, (allVideosLen[i]/duration)*W, 2, 0xff9900, .5);
+            var height:int = 2;
+            var alpha:Number = 0.1;
 
-            buffer.alpha = 0.2;
+            if(DEBUG_MODE)
+            {
+                height = 20;
+                alpha = 0.5;
+            }
+
+            Utils.drawRect(buffer, 0, 0, (allVideosLen[i]/duration)*W, height, 0xff9900, .5);
+
+            buffer.alpha = alpha;
             buffer.x = (sum/duration)*W;
             buffer.y = H - buffer.height;
             buffer.scaleX = 0;
@@ -383,7 +401,7 @@ public class VideoPlayerMulti extends Sprite implements MediaPlayer
 
     private function finished(e:Event):void
     {
-        if (vidNum >= len)
+        if (vidNum >= len-1)
         {
             video.stop();
             dispatchEvent(new Event('finish'));
@@ -485,7 +503,7 @@ public class VideoPlayerMulti extends Sprite implements MediaPlayer
 
     public function get total():Number
     {
-        return 0;
+        return _total;
     }
 
     public function set loaded(loaded:Boolean):void
@@ -541,6 +559,12 @@ public class VideoPlayerMulti extends Sprite implements MediaPlayer
     {
         if(loadingVideo)
             loadingVideo.stopLoad();
+    }
+
+    public function set totalTime(value:Number):void
+    {
+        trace("set video Total Time", value);
+        _total = value;
     }
 }
 }

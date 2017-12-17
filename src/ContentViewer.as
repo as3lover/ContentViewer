@@ -69,6 +69,7 @@ public class ContentViewer extends Sprite
     private const W2:Number = W/2;
     private const H2:Number = H/2;
     private var _stage:Stage;
+    public var curretntTopicIsQuiz:Boolean;
 
     public function ContentViewer()
     {
@@ -285,6 +286,8 @@ public class ContentViewer extends Sprite
         var numOfVids:int = int(list[0]);
         var ext:String = "." + String(list[1]).substr(0,3);
 
+
+
         if (list.length >= numOfVids + 2)
         {
             for(var j:int=0; j<numOfVids; j++)
@@ -309,15 +312,19 @@ public class ContentViewer extends Sprite
         //ext = ext.replace('\n','');
         //ext = ext.substr(0,4);
 
+        var totalTime:Number = 0;
+
         var path:Vector.<String> = new <String>[];
 
         for (var i:int = 0; i < numOfVids; i++)
         {
             var str:String = folder + String(i + 1) + ext;
             trace(str, allVideosLen[i]);
-
+            totalTime += Number(allVideosLen[i]);
             path.push(str);
         }
+
+        VideoPlayerMulti(myMedia).totalTime = totalTime;
 
         isVideo = true;
 
@@ -674,7 +681,10 @@ public class ContentViewer extends Sprite
 
     public function activeTopic(i:int):void
     {
+        trace("activeTopic", i);
+        trace("Total Time:", animation.duration);
         _totalTime = Utils.timeFormat(animation.duration * 1000);
+        trace("Total Time:", _totalTime);
         if(_topicFunc)
             _topicFunc(i);
     }

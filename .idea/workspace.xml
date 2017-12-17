@@ -4,11 +4,10 @@
     <list default="true" id="0d86f67c-6ca0-4f50-ba9b-d786dad477fe" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ContentViewer.as" afterPath="$PROJECT_DIR$/src/ContentViewer.as" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Viewer/Keyboard.as" afterPath="$PROJECT_DIR$/src/Viewer/Keyboard.as" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Viewer/assets.as" afterPath="$PROJECT_DIR$/src/Viewer/assets.as" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/media/VideoObject.as" afterPath="$PROJECT_DIR$/src/media/VideoObject.as" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Viewer/Animation.as" afterPath="$PROJECT_DIR$/src/Viewer/Animation.as" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Viewer/Board.as" afterPath="$PROJECT_DIR$/src/Viewer/Board.as" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Viewer/FileLoader.as" afterPath="$PROJECT_DIR$/src/Viewer/FileLoader.as" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/media/VideoPlayerMulti.as" afterPath="$PROJECT_DIR$/src/media/VideoPlayerMulti.as" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/src2/Utils.as" afterPath="$PROJECT_DIR$/src/src2/Utils.as" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,8 +29,8 @@
       <file leaf-file-name="ContentViewer.as" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ContentViewer.as">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="349" column="44" lean-forward="true" selection-start-line="349" selection-start-column="44" selection-end-line="349" selection-end-column="44" />
+            <state relative-caret-position="531">
+              <caret line="37" column="24" lean-forward="false" selection-start-line="37" selection-start-column="24" selection-end-line="37" selection-end-column="24" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#54#78#0" expanded="true" />
@@ -41,68 +40,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Keyboard.as" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Viewer/Keyboard.as">
+      <file leaf-file-name="Board.as" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Viewer/Board.as">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="55" column="29" lean-forward="true" selection-start-line="55" selection-start-column="29" selection-end-line="55" selection-end-column="29" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="VideoPlayerMulti.as" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/media/VideoPlayerMulti.as">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="49" column="0" lean-forward="false" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="VideoObject.as" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/media/VideoObject.as">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="74" column="18" lean-forward="false" selection-start-line="74" selection-start-column="18" selection-end-line="74" selection-end-column="18" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-                <element signature="e#57#78#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="assets.as" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Viewer/assets.as">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="21" column="28" lean-forward="true" selection-start-line="21" selection-start-column="28" selection-end-line="21" selection-end-column="28" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MediaPlayer.as" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/media/MediaPlayer.as">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="133">
-              <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SoundPlayer.as" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/SoundPlayer.as">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="106">
-              <caret line="188" column="8" lean-forward="false" selection-start-line="188" selection-start-column="8" selection-end-line="191" selection-end-column="27" />
+            <state relative-caret-position="1377">
+              <caret line="87" column="29" lean-forward="false" selection-start-line="87" selection-start-column="29" selection-end-line="87" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -111,9 +53,21 @@
       <file leaf-file-name="Animation.as" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Viewer/Animation.as">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="31">
-              <caret line="47" column="22" lean-forward="false" selection-start-line="47" selection-start-column="22" selection-end-line="47" selection-end-column="22" />
+            <state relative-caret-position="99">
+              <caret line="112" column="9" lean-forward="true" selection-start-line="112" selection-start-column="9" selection-end-line="112" selection-end-column="9" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="VideoPlayerMulti.as" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/media/VideoPlayerMulti.as">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="191">
+              <caret line="46" column="30" lean-forward="false" selection-start-line="46" selection-start-column="30" selection-end-line="46" selection-end-column="30" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -129,36 +83,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>remove</find>
-      <find>setvol</find>
-      <find>_volume</find>
-      <find>videoSound</find>
-      <find>play(</find>
-      <find>ns.re</find>
-      <find>ns.pl</find>
-      <find>vidnum</find>
-      <find>dra</find>
-      <find>mana</find>
-      <find>volu</find>
-      <find>key</find>
-      <find>volum</find>
-      <find>volumeu</find>
-      <find>volume</find>
-      <find>load(</find>
-      <find>drawRect</find>
+      <find>utils</find>
+      <find>draw</find>
+      <find>settop</find>
+      <find>.id</find>
+      <find>enab</find>
+      <find>update(</find>
+      <find>checktime(</find>
+      <find>check</find>
+      <find>enter_frame</find>
+      <find>newto</find>
+      <find>settopic</find>
+      <find>trace(</find>
+      <find>topic(</find>
+      <find>checktime</find>
+      <find>settime</find>
+      <find>checkti</find>
+      <find>checktop</find>
+      <find>.alpha =</find>
+      <find>update]</find>
+      <find>update</find>
+      <find>_topicFunc</find>
       <find>pause(</find>
-      <find>loading</find>
-      <find>loadin</find>
-      <find>loaded</find>
-      <find>loaded'</find>
-      <find>'loaded</find>
-      <find>'loaded'</find>
-      <find>'onVideoLoaded</find>
-      <find>hide</find>
-      <find>hidel</find>
-      <find>onVideoLoaded</find>
-      <find>addchild</find>
-      <find>addchildat</find>
+      <find>total</find>
+      <find>loadvideo</find>
+      <find>starttime =</find>
+      <find>totalTime</find>
+      <find>totalTime(</find>
+      <find>get percent</find>
+      <find>finish</find>
+      <find>tra</find>
     </findStrings>
     <replaceStrings>
       <replace>\\</replace>
@@ -200,7 +154,6 @@
         <option value="$PROJECT_DIR$/src/Main.as" />
         <option value="$PROJECT_DIR$/src/TimeLine.as" />
         <option value="$PROJECT_DIR$/src/Volume.as" />
-        <option value="$PROJECT_DIR$/src/Viewer/Board.as" />
         <option value="$PROJECT_DIR$/src/Viewer/TimeLine.as" />
         <option value="$PROJECT_DIR$/src/LocalObject.as" />
         <option value="$PROJECT_DIR$/src/Client.as" />
@@ -213,15 +166,16 @@
         <option value="$PROJECT_DIR$/src/media/MediaPlayer.as" />
         <option value="$PROJECT_DIR$/src/videoPlayerPackage/VideoPlayer.as" />
         <option value="$PROJECT_DIR$/src/SoundPlayer.as" />
-        <option value="$PROJECT_DIR$/src/Viewer/FileLoader.as" />
-        <option value="$PROJECT_DIR$/src/Viewer/Animation.as" />
         <option value="$PROJECT_DIR$/src/videoPlayerPackage/VideoObject.as" />
         <option value="$PROJECT_DIR$/src/src2/Utils.as" />
         <option value="$PROJECT_DIR$/src/Viewer/Keyboard.as" />
         <option value="$PROJECT_DIR$/src/Viewer/assets.as" />
-        <option value="$PROJECT_DIR$/src/ContentViewer.as" />
-        <option value="$PROJECT_DIR$/src/media/VideoPlayerMulti.as" />
         <option value="$PROJECT_DIR$/src/media/VideoObject.as" />
+        <option value="$PROJECT_DIR$/src/Viewer/FileLoader.as" />
+        <option value="$PROJECT_DIR$/src/Viewer/Animation.as" />
+        <option value="$PROJECT_DIR$/src/ContentViewer.as" />
+        <option value="$PROJECT_DIR$/src/Viewer/Board.as" />
+        <option value="$PROJECT_DIR$/src/media/VideoPlayerMulti.as" />
       </list>
     </option>
   </component>
@@ -252,8 +206,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -372,7 +327,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -896,14 +850,16 @@
       <workItem from="1500894490273" duration="1412000" />
       <workItem from="1512230341666" duration="2902000" />
       <workItem from="1512233462272" duration="45855000" />
+      <workItem from="1512405791976" duration="1208000" />
+      <workItem from="1513482518214" duration="11388000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="305511000" />
+    <option name="totallyTimeSpent" value="318107000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="0" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -924,10 +880,10 @@
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24816984" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24743778" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32755905" sideWeight="0.49707174" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -1121,14 +1077,6 @@
       </provider>
     </entry>
     <entry file="jar://D:/Softwares/Adobe/AIRSDK_Compiler/frameworks/libs/player/25.0/playerglobal.swc!/library.swf" />
-    <entry file="file://$PROJECT_DIR$/src/Viewer/Board.as">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="89" column="8" lean-forward="false" selection-start-line="89" selection-start-column="8" selection-end-line="89" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../GreenSock-AS3/src/com/greensock/plugins/TweenPlugin.as">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-347">
@@ -1188,26 +1136,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/videoPlayerPackage/VideoPlayer.as">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="14" column="12" lean-forward="false" selection-start-line="14" selection-start-column="12" selection-end-line="14" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/videoPlayerPackage/VideoPlayer.as" />
     <entry file="file://$PROJECT_DIR$/src/Client.as">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="252">
           <caret line="34" column="21" lean-forward="true" selection-start-line="34" selection-start-column="21" selection-end-line="34" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/src2/Utils.as">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="75" column="10" lean-forward="false" selection-start-line="75" selection-start-column="10" selection-end-line="75" selection-end-column="10" />
           <folding />
         </state>
       </provider>
@@ -1220,10 +1153,45 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Viewer/Keyboard.as">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="782">
+          <caret line="55" column="29" lean-forward="false" selection-start-line="55" selection-start-column="29" selection-end-line="55" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/SoundPlayer.as">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="111" column="20" lean-forward="false" selection-start-line="111" selection-start-column="20" selection-end-line="111" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Viewer/assets.as">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="21" column="28" lean-forward="false" selection-start-line="21" selection-start-column="28" selection-end-line="21" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/media/VideoObject.as">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="577" column="20" lean-forward="false" selection-start-line="577" selection-start-column="20" selection-end-line="577" selection-end-column="20" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#57#78#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Viewer/FileLoader.as">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="214" column="23" lean-forward="true" selection-start-line="214" selection-start-column="23" selection-end-line="214" selection-end-column="23" />
+        <state relative-caret-position="178">
+          <caret line="128" column="83" lean-forward="false" selection-start-line="128" selection-start-column="83" selection-end-line="128" selection-end-column="83" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#62#92#0" expanded="true" />
@@ -1231,26 +1199,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://D:/Softwares/Adobe/AIRSDK_Compiler/frameworks/libs/air/airglobal.swc!/library.swf">
+    <entry file="file://$PROJECT_DIR$/src/src2/Utils.as">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="14725" column="0" lean-forward="true" selection-start-line="14725" selection-start-column="0" selection-end-line="14725" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Viewer/Keyboard.as">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="55" column="29" lean-forward="true" selection-start-line="55" selection-start-column="29" selection-end-line="55" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/SoundPlayer.as">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="106">
-          <caret line="188" column="8" lean-forward="false" selection-start-line="188" selection-start-column="8" selection-end-line="191" selection-end-column="27" />
+        <state relative-caret-position="133">
+          <caret line="47" column="27" lean-forward="false" selection-start-line="47" selection-start-column="27" selection-end-line="47" selection-end-column="27" />
           <folding />
         </state>
       </provider>
@@ -1258,33 +1210,25 @@
     <entry file="file://$PROJECT_DIR$/src/media/MediaPlayer.as">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="133">
-          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+          <caret line="28" column="17" lean-forward="false" selection-start-line="28" selection-start-column="17" selection-end-line="28" selection-end-column="17" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Viewer/Animation.as">
+    <entry file="jar://D:/Softwares/Adobe/AIRSDK_Compiler/frameworks/libs/air/airglobal.swc!/library.swf">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="31">
-          <caret line="47" column="22" lean-forward="false" selection-start-line="47" selection-start-column="22" selection-end-line="47" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Viewer/assets.as">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="21" column="28" lean-forward="true" selection-start-line="21" selection-start-column="28" selection-end-line="21" selection-end-column="28" />
+        <state relative-caret-position="102">
+          <caret line="85" column="19" lean-forward="false" selection-start-line="85" selection-start-column="19" selection-end-line="85" selection-end-column="19" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ContentViewer.as">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="349" column="44" lean-forward="true" selection-start-line="349" selection-start-column="44" selection-end-line="349" selection-end-column="44" />
+        <state relative-caret-position="531">
+          <caret line="37" column="24" lean-forward="false" selection-start-line="37" selection-start-column="24" selection-end-line="37" selection-end-column="24" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#54#78#0" expanded="true" />
@@ -1293,23 +1237,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/media/VideoPlayerMulti.as">
+    <entry file="file://$PROJECT_DIR$/src/Viewer/Board.as">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="49" column="0" lean-forward="false" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
+        <state relative-caret-position="1377">
+          <caret line="87" column="29" lean-forward="false" selection-start-line="87" selection-start-column="29" selection-end-line="87" selection-end-column="29" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/media/VideoObject.as">
+    <entry file="file://$PROJECT_DIR$/src/Viewer/Animation.as">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="74" column="18" lean-forward="false" selection-start-line="74" selection-start-column="18" selection-end-line="74" selection-end-column="18" />
+        <state relative-caret-position="99">
+          <caret line="112" column="9" lean-forward="true" selection-start-line="112" selection-start-column="9" selection-end-line="112" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/media/VideoPlayerMulti.as">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="46" column="30" lean-forward="false" selection-start-line="46" selection-start-column="30" selection-end-line="46" selection-end-column="30" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#57#78#0" expanded="true" />
           </folding>
         </state>
       </provider>

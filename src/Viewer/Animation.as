@@ -31,6 +31,7 @@ public class Animation
     private var _startTime:Number;
     private var _stopTime:Number;
     private var _duration:Number;
+    private var _selectedTime:Number;
 
     ///////////////////
     public function Animation(Main:ContentViewer)
@@ -56,6 +57,8 @@ public class Animation
         _startTime = 0;
         _stopTime = main.myMedia.total;
         _duration = _stopTime - _startTime;
+        trace("Animation._duration:", _duration)
+        trace(_stopTime , _startTime)
         main.activeTopic(0);
 
         _show = new Array()
@@ -139,6 +142,9 @@ public class Animation
 
     private function checkTimes(event:Event):void
     {
+        if(main.curretntTopicIsQuiz)
+                return;
+
         //trace('checkTimes 1');
         var time:Number = main.myMedia.time;
         if(_time == time)
@@ -244,6 +250,9 @@ public class Animation
     ///////////////////////////////// Old check Time
     private function checkTime(e:Event = null):void
     {
+        if(main.curretntTopicIsQuiz)
+                return;
+
         var time:Number = main.myMedia.time;
         if(_time == time)
             return;
@@ -267,22 +276,37 @@ public class Animation
 
     public function checkTopics():void
     {
+        if(main.myMedia.time < _selectedTime)
+                return;
+
         _len = _topics.length;
         for(var i:int=_len-1; i>-1; i--)
         {
             //trace('i:',i, 'topic i time:',_topics[i].time,'current time', _time, 'currentTopic:', _currentTopic, 'id:', _topics[i].id);
-            if(_topics[i].time - 1 < _time)
+            if(_topics[i].time - 0.01 < _time)
             {
                 if(_currentTopic != i)
                 {
-                    currentTopic = i;
-                    main.activeTopic(i);
-                    if(_topics[i].id)
-                        main.pause();
-
+                    enableTopic(i);
                 }
                 return;
             }
+        }
+    }
+
+    public function enableTopic(i:int)
+    {
+        trace("enableTopic", i);
+        currentTopic = i;
+        main.activeTopic(i);
+        if(_topics[i].id)
+        {
+            main.curretntTopicIsQuiz = true;
+            main.pause();
+        }
+        else
+        {
+            main.curretntTopicIsQuiz = false;
         }
     }
 
@@ -292,11 +316,20 @@ public class Animation
 
         _startTime = _topics[i].time;
         if(_topics.length > i+1)
+        {
+            trace("_topics.length > i+1");
+            trace("_topics[i+1].time:", _topics[i+1].time);
             _stopTime = _topics[i+1].time;
+        }
         else
+        {
+            trace("main.myMedia.total", main.myMedia.total);
             _stopTime = main.myMedia.total;
+        }
 
         _duration = _stopTime - _startTime;
+        trace("Animation._duration 2:", _duration)
+        trace(_stopTime , _startTime)
     }
 
     public function newTopic(num:int):String
@@ -319,7 +352,21 @@ public class Animation
             }
         }
 
-        main.time = _topics[num].time;
+        if(_topics[num].id)
+        {
+            enableTopic(num);
+        }
+        else
+        {
+            //main.curretntTopicIsQuiz = false;
+            enableTopic(num);
+            _selectedTime = _topics[num].time;
+            main.time = _selectedTime;
+
+            if(num == 0)
+                    _selectedTime == 0;
+        }
+
 
         return null;
     }

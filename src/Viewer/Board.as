@@ -79,9 +79,14 @@ public class Board extends Sprite
             bit.height = _mask.height;
             bit.scaleX = bit.scaleY
         }
-        bit.x = bit.width - _mask.width
+        bit.x = bit.width - _mask.width;
 
         _back.addChild(bit);
+
+        var mask:Sprite = new Sprite();
+        Utils.drawRect(mask, 0,0, _mask.width, _mask.height);
+        _back.addChild(mask);
+        _back.mask = mask;
     }
 
 
